@@ -5,13 +5,24 @@
 	<title>{SITENAME}</title>
 
 	<link rel="stylesheet" href="{SITEURL}/dice.css">
+	<script>
+		var TOP_URL = '{SITEURL}';
+		var WS_URL = '{WEBSOCKET_URL}';
+	</script>
+	<script src="{SITEURL}/dice.js"></script>
 </head>
 
 <body onload="init();">
 
 <h1>{SITENAME}</h1>
 
-<div id="content">
+<div id="signin">
+	<form id="join_room">
+		<button>Join Room</button>
+	</form>
+</div>
+
+<div id="gamespace" style="display: hidden;">
 </div>
 
 <footer>

@@ -30,6 +30,18 @@ CONFIG_DIR=$(dirname $(realpath "${CONFIG_FILE}"))
 TOP_DIR=$(dirname $(realpath "${0}"))
 TEMPLATES_DIR="${TOP_DIR}/templates"
 
+WEBSOCKET_PROTOCOL="ws"
+if [[ "${WEBSOCKET_USE_TLS}" = "yes" ]]; then
+	WEBSOCKET_PROTOCOL="wss"
+fi
+WEBSOCKET_URL="${WEBSOCKET_PROTOCOL}://${WEBSOCKET_HOSTNAME}:${WEBSOCKET_PORT}"
+
+mkdir -p "${OUTPUT_DIR}"
 cp -v "${TEMPLATES_DIR}"/*.{css,js} "${OUTPUT_DIR}/"
 
 indexContent=$(cat "${TEMPLATES_DIR}/index.html")
+indexContent=${indexContent//"{SITENAME}"/"${SITENAME}"}
+indexContent=${indexContent//"{SITEURL}"/"${SITEURL}"}
+indexContent=${indexContent//"{COPYRIGHT}"/"${COPYRIGHT}"}
+indexContent=${indexContent//"{WEBSOCKET_URL}"/"${WEBSOCKET_URL}"}
+echo "${indexContent}" > "${OUTPUT_DIR}/index.html"
