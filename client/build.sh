@@ -30,12 +30,6 @@ CONFIG_DIR=$(dirname $(realpath "${CONFIG_FILE}"))
 TOP_DIR=$(dirname $(realpath "${0}"))
 TEMPLATES_DIR="${TOP_DIR}/templates"
 
-WEBSOCKET_PROTOCOL="ws"
-if [[ "${WEBSOCKET_USE_TLS}" = "yes" ]]; then
-	WEBSOCKET_PROTOCOL="wss"
-fi
-WEBSOCKET_URL="${WEBSOCKET_PROTOCOL}://${WEBSOCKET_HOSTNAME}:${WEBSOCKET_PORT}"
-
 mkdir -p "${OUTPUT_DIR}"
 cp -v "${TEMPLATES_DIR}"/*.{css,js} "${OUTPUT_DIR}/"
 

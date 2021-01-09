@@ -3,8 +3,8 @@ PY?=python3
 BASEDIR=$(CURDIR)
 BUILD_SCRIPT=$(BASEDIR)/build.sh
 OUTPUTDIR=$(BASEDIR)/html
-CONFFILE=$(BASEDIR)/../dev.conf
-PUBLISHCONF=$(BASEDIR)/../pub.conf
+CONFFILE=$(BASEDIR)/dev.conf
+PUBLISHCONF=$(BASEDIR)/pub.conf
 
 SSH_HOST=vps01.macneils.ca
 SSH_PORT=22
