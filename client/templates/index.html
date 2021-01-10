@@ -12,17 +12,21 @@
 	<script src="{SITEURL}/dice.js"></script>
 </head>
 
-<body onload="init();">
+<body>
 
 <h1>{SITENAME}</h1>
 
 <div id="signin">
 	<form id="join_room">
-		<button>Join Room</button>
+		<label for="player_name">Name</label>
+		<input type="text" id="player_name" name="player_name">
+		<label for="room_code">Room Code</label>
+		<input type="text" id="room_code" name="room_code">
+		<button type="button" id="join_btn">Join Room</button>
 	</form>
 </div>
 
-<div id="gamespace" style="display: hidden;">
+<div id="gamespace" style="display: none;">
 </div>
 
 <footer>
