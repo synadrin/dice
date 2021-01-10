@@ -1,0 +1,31 @@
+{
+	"room_code": "macfam",
+	"members": ["Tim", "Marie", "Boo", "Emma", "Sara", "Pat"],
+	"is_game_active": true,
+	"current_game": {
+		"turn_order": [
+			"Boo",
+			"Tim",
+			"Emma",
+			"Sara",
+			"Pat"
+		],
+		"scores": {
+			"Boo": 4300,
+			"Emma": 4150,
+			"Pat": 3900,
+			"Sara": 2300,
+			"Tim": 650
+		},
+		"current_turn": 2,
+		"current_turn_name": "Tim",
+		"current_round": 5,
+		"target_score": 10000,
+		"game_over": false,
+		"dice": [5, 5, 4, 6, 5],
+		"current_score": 500,
+		"locked_dice": [1, 1, 0, 0, 1],
+		"available_dice": 2,
+		"can_roll": true
+	}
+}
