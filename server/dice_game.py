@@ -57,8 +57,11 @@ class DiceGame:
 
         self.winner = None
 
+    def get_current_turn_name(self):
+        return self.players[self.current_turn]["name"]
+
     def get_state(self):
-        current_turn_name = self.players[self.current_turn]["name"]
+        current_turn_name = self.get_current_turn_name()
         return {
             "game_over": self.game_over,
             "players": self.players,
@@ -84,7 +87,7 @@ class DiceGame:
             self.current_turn = 0
             self.current_round += 1
         self.can_stop = False
-        logging.debug("player: {}".format(self.players[self.current_turn]["name"]))
+        logging.debug("player: {}".format(self.get_current_turn_name()))
 
     def reset_dice(self):
         logging.debug("reset_dice")
@@ -100,7 +103,7 @@ class DiceGame:
         self.next_player()
 
     def win(self):
-        self.winner = self.players[self.current_turn]["name"]
+        self.winner = self.get_current_turn_name()
         self.players[self.current_turn]["score"] = self.score_win
         self.game_over = True
         self.can_stop = False

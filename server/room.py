@@ -42,7 +42,12 @@ class WrongPlayerError(Exception):
 
 
 """ Raised if an attempt is made at starting a game when one is already active """
-class GameAlreadyRunning(Exception):
+class GameAlreadyRunningError(Exception):
+    pass
+
+
+""" Raised when a player command is issued and there's no active game """
+class NoGameRunningError(Exception):
     pass
 
 
@@ -89,7 +94,7 @@ class Room:
 
     def start_new_game(self):
         if self.is_game_active:
-            raise GameAlreadyRunning
+            raise GameAlreadyRunningError
 
         if self.current_game:
             self.game_history.append(self.current_game)
@@ -101,5 +106,12 @@ class Room:
         pass
 
     def roll(self, name):
-        # TODO: Roll
+        if not self.is_game_active:
+            raise NoGameRunningError
+
+        if name != self.current_game.get_current_turn_name():
+            raise WrongPlayerError
+
+        # Roll
+        self.current_game.roll()
         self.is_game_active = not self.current_game.game_over
