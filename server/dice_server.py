@@ -63,6 +63,15 @@ class DiceServer:
         # Raises dice_game.InsufficientPlayersError
         self.rooms[room_code].start_new_game()
         logging.info("Game started: {}".format(room_code))
+
+        await self.notify_room(room_code)
+
+    async def roll(self, room_code, name):
+        if not room_code in self.rooms:
+            raise NoSuchRoomError(room_code)
+
+        # Raises dice_game.NoGameRunningError and dice_game.WrongPlayerError
+        self.rooms[room_code].roll(name)
         await self.notify_room(room_code)
 
     async def consumer_handler(self, websocket, path):
@@ -80,7 +89,7 @@ class DiceServer:
                     elif data["action"] == "start_game":
                         await self.start_game(room_code)
                     elif data["action"] == "roll":
-                        pass
+                        await self.roll(room_code, name)
                     elif data["action"] == "stop_roll":
                         pass
                     else:
