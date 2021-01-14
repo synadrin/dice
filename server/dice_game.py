@@ -143,7 +143,7 @@ class DiceGame:
                             found = []
 
         ## 1s and 5s
-        first_five = None
+        first_five_found = False
         for die in self.dice:
             if not die["locked"] and not die["counted"]:
                 if die["value"] == 1:
@@ -154,13 +154,13 @@ class DiceGame:
                 elif die["value"] == 5:
                     self.last_roll_score += FIVE_VALUE
                     die["counted"] = True
-                    # Second five, only one is locked
-                    if first_five:
-                        first_five["locked"] = True
-                        self.available_dice -= 1
-                        first_five = None
+                    # This is the second five, only the first one is locked
+                    if first_five_found:
+                        first_five_found = False
                     else:
-                        first_five = die
+                        die["locked"] = True
+                        self.available_dice -= 1
+                        first_five_found = True
 
         #logging.debug("roll: {} / score: {}".format(self.dice, self.last_roll_score))
         self.current_score += self.last_roll_score
