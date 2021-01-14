@@ -119,9 +119,7 @@ class DiceServer:
                 logging.debug("Connection closed: {}".format(e))
                 await self.unregister_connection(room_code, name)
             finally:
-                logging.debug("finally {}/{}".format(self.room_code, self.name))
-                #await self.unregister_connection(room_code, name)
-                pass
+                await self.unregister_connection(room_code, name)
 
     def start(self):
         self.ws_server = websockets.serve(self.consumer_handler,
