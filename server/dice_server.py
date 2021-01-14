@@ -1,9 +1,14 @@
 import asyncio
+import dice_game
 import json
 import logging
 import os
 import room
 import websockets
+
+
+class NoSuchRoomError(Exception):
+    pass
 
 
 class DiceServer:
@@ -28,7 +33,7 @@ class DiceServer:
 
         logging.info("Connected: {}/{}".format(room_code, data["name"]))
         await self.notify_room(room_code)
-        
+
         return room_code, data["name"]
 
     async def unregister_connection(self, room_code, name):
@@ -46,6 +51,20 @@ class DiceServer:
                     [members[name].send(room_state) for name in members]
                 )
 
+    async def send_error_msg(self, websocket, error_msg):
+        await websocket.send(
+            json.dumps({"type": "error", "msg": error_msg})
+        )
+
+    async def start_game(self, room_code):
+        if not room_code in self.rooms:
+            raise NoSuchRoomError(room_code)
+
+        # Raises dice_game.InsufficientPlayersError
+        self.rooms[room_code].start_new_game()
+        logging.info("Game started: {}".format(room_code))
+        await self.notify_room(room_code)
+
     async def consumer_handler(self, websocket, path):
         room_code = ""
         name = ""
@@ -58,7 +77,7 @@ class DiceServer:
                         websocket, data
                     )
                 elif data["action"] == "start_game":
-                    pass
+                    await self.start_game(room_code)
                 elif data["action"] == "roll":
                     pass
                 elif data["action"] == "stop_roll":
@@ -67,28 +86,40 @@ class DiceServer:
                     logging.error("Unsupported event: {}".format(data))
             except json.JSONDecodeError:
                 logging.error("Invalid JSON: {}".format(message))
-                await websocket.send(json.dumps({"error_msg": "Invalid JSON."}))
+                await self.send_error_msg(websocket, "Invalid JSON.")
+            except NoSuchRoomError as e:
+                error_msg = "NoSuchRoomError: {}".format(e)
+                logging.debug(error_msg)
+                await self.send_error_msg(websocket, error_msg)
             except room.InvalidRoomCodeError as e:
-                # TODO: Return error message
-                error_msg = "InvalidRoomCodeError: ".format(e)
+                error_msg = "InvalidRoomCodeError: {}".format(e)
                 logging.debug(error_msg)
-                await websocket.send(json.dumps({"error_msg": error_msg}))
+                await self.send_error_msg(websocket, error_msg)
             except room.InvalidNameError as e:
-                error_msg = "InvalidNameError: ".format(e)
+                error_msg = "InvalidNameError: {}".format(e)
                 logging.debug(error_msg)
-                await websocket.send(json.dumps({"error_msg": error_msg}))
+                await self.send_error_msg(websocket, error_msg)
             except room.NameInUseError as e:
-                error_msg = "NameInUseError: ".format(e)
+                error_msg = "NameInUseError: {}".format(e)
                 logging.debug(error_msg)
-                await websocket.send(json.dumps({"error_msg": error_msg}))
+                await self.send_error_msg(websocket, error_msg)
+            except room.GameAlreadyRunning as e:
+                error_msg = "GameAlreadyRunning: {}".format(e)
+                logging.debug(error_msg)
+                await self.send_error_msg(websocket, error_msg)
+            except dice_game.InsufficientPlayersError as e:
+                error_msg = "InsufficientPlayersError: {}".format(e)
+                logging.info(error_msg)
+                await self.send_error_msg(websocket, error_msg)
             except (AttributeError, ValueError) as e:
                 error_msg = "Problem with request"
                 logging.error("Problem with request: {}: {}".format(data, e))
-                await websocket.send(json.dumps({"error_msg": error_msg}))
+                await self.send_error_msg(websocket, error_msg)
             except (ConnectionClosed, ConnectionClosedError, ConnectionClosedOK) as e:
                 logging.debug("Connection closed: {}".format(e))
                 await self.unregister_connection(room_code, name)
             finally:
+                logging.debug("finally {}/{}".format(self.room_code, self.name))
                 #await self.unregister_connection(room_code, name)
                 pass
 
