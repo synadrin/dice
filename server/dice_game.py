@@ -162,9 +162,10 @@ class DiceGame:
                     else:
                         first_five = die
 
-        logging.debug("roll: {} / score: {}".format(self.dice, self.last_roll_score))
+        #logging.debug("roll: {} / score: {}".format(self.dice, self.last_roll_score))
+        self.current_score += self.last_roll_score
         player_new_score = self.players[self.current_turn]["score"] \
-            + self.last_roll_score
+            + self.current_score
         if self.last_roll_score == 0:
             # Bust if nothing scored this roll
             self.bust()
