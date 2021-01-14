@@ -88,7 +88,9 @@ function DiceGame()
 		// TODO: Handle parsing problems/validation
 		data = JSON.parse(message);
 
-		that.last_message = message;
+		// Make the message prettier for readability
+		that.last_message = JSON.stringify(data, null, 4)
+			+ "\n\n" + message;
 
 		if (data.type == "error")
 		{
