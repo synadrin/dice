@@ -7,10 +7,13 @@ function DiceGame()
 	this.websocket = undefined;
 	this.name = "";
 	this.room_code = "";
+	this.last_message = "";
 
 	this.can_start = false;
 	this.can_roll = false;
 	this.can_stop = false;
+
+	this.game_state = null;
 
 	this.controls = {
 		start_btn: document.getElementById("start_btn"),
@@ -41,53 +44,68 @@ function DiceGame()
 		}
 	}
 
+	this.update_game_state = function(new_state)
+	{
+		that.can_start = false;
+		that.can_roll = false;
+		that.can_stop = false;
+
+		// Is the game over?
+		if ("game_over" in new_state && new_state.game_over)
+		{
+			console.log("Game Over");
+			//TODO: Game Over screen
+		// Is it our turn?
+		} else if ("current_turn_name" in new_state
+			&& new_state.current_turn_name == that.name)
+		{
+			that.can_roll = true;
+			that.can_stop = ("can_stop" in new_state && new_state.can_stop);
+		}
+
+		that.game_state = new_state;
+	}
+
+	this.update_display = function()
+	{
+		// Switch to game display
+		var sign_in = document.getElementById("signin");
+		sign_in.style = "display: none;"
+		var game_room = document.getElementById("game_room");
+		game_room.style = "display: initial;"
+
+		// Update button states
+		that.controls.start_btn.disabled = !that.can_start;
+		that.controls.roll_btn.disabled = !that.can_roll;
+		that.controls.stop_roll_btn.disabled = !that.can_stop;
+
+		var p = document.getElementById("debug_console");
+		p.textContent = that.last_message;
+	}
+
 	this.parse_message = function(message)
 	{
 		// TODO: Handle parsing problems/validation
 		data = JSON.parse(message);
+
+		that.last_message = message;
 
 		if (data.type == "error")
 		{
 			that.show_error_msg(data.msg);
 		} else
 		{
-			// Switch to game display
-			var sign_in = document.getElementById("signin");
-			sign_in.style = "display: none;"
-			var game_room = document.getElementById("game_room");
-			game_room.style = "display: initial;"
-
 			// Parse state
-			if ("is_game_active" in data && data.is_game_active)
+			if ("is_game_active" in data && data.is_game_active
+				&& "current_game" in data && data.current_game != null)
 			{
-				that.can_start = false;
-
-				// Is the game over?
-				if ("game_over" in data.current_game && data.current_game.game_over)
-				{
-					console.log("Game Over");
-					//TODO: Game Over screen
-				// Is it our turn?
-				} else if ("current_turn_name" in data.current_game
-					&& data.current_game.current_turn_name == that.name)
-				{
-					that.can_roll = true;
-					that.can_stop = ("can_stop" in data.current_game
-						&& data.current_game.can_stop);
-				}
+				that.update_game_state(data.current_game);
 			} else
 			{
 				that.can_start = ("can_start" in data && data.can_start);
 			}
 
-			// Update button states
-			that.controls.start_btn.disabled = !that.can_start;
-			that.controls.roll_btn.disabled = !that.can_roll;
-			that.controls.stop_roll_btn.disabled = !that.can_stop;
-
-			var p = document.createElement("p");
-			p.textContent = message;
-			game_room.appendChild(p);
+			that.update_display();
 		}
 	}
 
