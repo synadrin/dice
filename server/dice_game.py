@@ -189,8 +189,8 @@ class DiceGame:
             raise CantStopError
 
         logging.debug("stop_roll")
+        self.players[self.current_turn]["score"] += self.current_score
         if self.current_score >= self.score_to_pass:
             self.next_player()
         else:
-            self.players[self.current_turn]["score"] += self.current_score
             self.bust()

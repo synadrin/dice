@@ -115,3 +115,14 @@ class Room:
         # Roll
         self.current_game.roll()
         self.is_game_active = not self.current_game.game_over
+
+    def stop_roll(self, name):
+        if not self.is_game_active:
+            raise NoGameRunningError
+
+        if name != self.current_game.get_current_turn_name():
+            raise WrongPlayerError
+
+        # Roll
+        self.current_game.stop_roll()
+        self.is_game_active = not self.current_game.game_over
