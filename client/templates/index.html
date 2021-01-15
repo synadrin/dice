@@ -18,10 +18,10 @@
 
 <div id="signin">
 	<form id="join_room">
-		<label for="player_name">Name</label>
-		<input type="text" id="player_name" name="player_name">
-		<label for="room_code">Room Code</label>
-		<input type="text" id="room_code" name="room_code">
+		<label for="player_name_input">Name</label>
+		<input type="text" id="player_name_input" name="player_name_input">
+		<label for="room_code_input">Room Code</label>
+		<input type="text" id="room_code_input" name="room_code_input">
 		<button type="button" id="join_btn">Join Room</button>
 	</form>
 </div>
@@ -30,13 +30,24 @@
 	<div id="error_msgs" style="display: none;">
 	</div>
 
+	<div id="game_header">
+		<p id="room_info"></p>
+	</div>
+
+	<canvas id="dice"></canvas>
+
 	<form id="game_controls">
 		<button type="button" id="start_btn">Start Game</button>
 		<button type="button" id="roll_btn">Roll</button>
 		<button type="button" id="stop_roll_btn">Stop Rolling</button>
 	</form>
 
+	<table id="players">
+	</table>
+
 	<div id="members">
+		<ul id="member_list">
+		</ul>
 	</div>
 
 	<pre id="debug_console"></pre>

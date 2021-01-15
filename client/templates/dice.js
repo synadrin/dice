@@ -13,6 +13,7 @@ function DiceGame()
 	this.can_roll = false;
 	this.can_stop = false;
 
+	this.room_members = [];
 	this.game_state = null;
 
 	this.controls = {
@@ -23,6 +24,13 @@ function DiceGame()
 	this.controls.start_btn.disabled = true;
 	this.controls.roll_btn.disabled = true;
 	this.controls.stop_roll_btn.disabled = true;
+	this.display = {
+		member_list: document.getElementById("member_list"),
+	};
+
+	this.tilesheet_img = new Image();
+	this.tile_width = 64;
+	this.tile_height = 64;
 
 	if ("WebSocket" in window)
 	{
@@ -74,10 +82,26 @@ function DiceGame()
 		var game_room = document.getElementById("game_room");
 		game_room.style = "display: initial;"
 
-		// Update button states
+		// Button states
 		that.controls.start_btn.disabled = !that.can_start;
 		that.controls.roll_btn.disabled = !that.can_roll;
 		that.controls.stop_roll_btn.disabled = !that.can_stop;
+
+		// Member list
+		while (that.display.member_list.lastChild)
+		{
+			that.display.member_list.removeChild(
+				that.display.member_list.lastChild
+			);
+		}
+		for (var i = 0; i < that.room_members.length; i++)
+		{
+			var item = document.createElement("li");
+			item.appendChild(document.createTextNode(
+				that.room_members[i]
+			));
+			that.display.member_list.appendChild(item);
+		}
 
 		var p = document.getElementById("debug_console");
 		p.textContent = that.last_message;
@@ -97,7 +121,13 @@ function DiceGame()
 			that.show_error_msg(data.msg);
 		} else
 		{
-			// Parse state
+			// Update members list
+			if ("members" in data)
+			{
+				this.room_members = data.members;
+			}
+
+			// Parse game state
 			if ("is_game_active" in data && data.is_game_active
 				&& "current_game" in data && data.current_game != null)
 			{
@@ -171,8 +201,8 @@ function init()
 
 	document.getElementById("join_btn").onclick = function(evt)
 	{
-		name = document.getElementById("player_name").value;
-		room_code = document.getElementById("room_code").value;
+		name = document.getElementById("player_name_input").value;
+		room_code = document.getElementById("room_code_input").value;
 		dg.join(name, room_code);
 	}
 }
