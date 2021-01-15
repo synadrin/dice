@@ -31,7 +31,7 @@ TOP_DIR=$(dirname $(realpath "${0}"))
 TEMPLATES_DIR="${TOP_DIR}/templates"
 
 mkdir -p "${OUTPUT_DIR}"
-cp -v "${TEMPLATES_DIR}"/*.{css,js} "${OUTPUT_DIR}/"
+cp -v "${TEMPLATES_DIR}"/*.{css,js,png} "${OUTPUT_DIR}/"
 
 indexContent=$(cat "${TEMPLATES_DIR}/index.html")
 indexContent=${indexContent//"{SITENAME}"/"${SITENAME}"}
