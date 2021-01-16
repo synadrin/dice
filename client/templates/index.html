@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>{SITENAME}</title>
 
 	<link rel="stylesheet" href="{SITEURL}/dice.css">
 	<script>
 		var TOP_URL = '{SITEURL}';
 		var WS_URL = '{WEBSOCKET_URL}';
+		var DEBUG = '{DEBUG}';
 	</script>
 	<script src="{SITEURL}/dice.js"></script>
 </head>
@@ -36,18 +38,16 @@
 	</div>
 
 	<div id="game_space">
-		<div id="game_header">
-			<div id="turn_info">
-				<span id="turn">
-					<span id="current_turn_name">(nobody)</span>'s turn
-				</span>
-				<span id="score">
-					Score: <span id="current_score">0</span>
-				</span>
-				<span id="last_roll">
-					Last roll: <span id="last_roll_score">0</span>
-				</span>
-			</div>
+		<div id="turn_info">
+			<span id="turn">
+				<span id="current_turn_name">(nobody)</span>'s turn
+			</span>
+			<span id="score">
+				Score: <span id="current_score">0</span>
+			</span>
+			<span id="last_roll">
+				Last roll: <span id="last_roll_score">0</span>
+			</span>
 		</div>
 
 		<canvas id="dice" width="368" height="80"></canvas>
