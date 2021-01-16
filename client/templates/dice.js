@@ -157,7 +157,10 @@ function DiceGame()
 		// Is the game over?
 		if ("game_over" in new_state && new_state.game_over)
 		{
-			console.log("Game Over");
+			if (typeof DEBUG !== 'undefined' && DEBUG)
+			{
+				console.log("Game Over");
+			}
 			//TODO: Game Over screen
 		// Is it our turn?
 		} else if ("current_turn_name" in new_state
@@ -228,7 +231,10 @@ function DiceGame()
 			that.display.game_room.style.display = "none";
 		}
 
-		that.display.debug_console.textContent = that.last_message;
+		if (typeof DEBUG !== 'undefined' && DEBUG)
+		{
+			that.display.debug_console.textContent = that.last_message;
+		}
 	}
 
 	this.parse_message = function(message)
@@ -357,7 +363,10 @@ function DiceGame()
 	this.show_error_msg = function(error_msg)
 	{
 		// TODO: Display at top of the screen
-		console.log(error_msg);
+		if (typeof DEBUG !== 'undefined' && DEBUG)
+		{
+			console.log(error_msg);
+		}
 	}
 
 	this.join = function(name, room_code)
