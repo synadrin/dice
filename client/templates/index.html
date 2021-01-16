@@ -16,6 +16,9 @@
 
 <h1>{SITENAME}</h1>
 
+<div id="error_msgs">
+</div>
+
 <div id="signin">
 	<form id="join_room">
 		<label for="player_name_input">Name</label>
@@ -27,31 +30,46 @@
 </div>
 
 <div id="game_room" style="display: none;">
-	<div id="error_msgs" style="display: none;">
+	<div id="room_info">
+		<span id="player_name"></span>
+		<span id="room_code"></span>
 	</div>
 
-	<div id="game_header">
-		<p id="room_info"></p>
+	<div id="game_space">
+		<div id="game_header">
+			<div id="turn_info">
+				<span id="turn">
+					<span id="current_turn_name">(nobody)</span>'s turn
+				</span>
+				<span id="score">
+					Score: <span id="current_score">0</span>
+				</span>
+				<span id="last_roll">
+					Last roll: <span id="last_roll_score">0</span>
+				</span>
+			</div>
+		</div>
+
+		<canvas id="dice" width="368" height="80"></canvas>
+
+		<form id="game_controls">
+			<button type="button" id="start_btn">Start Game</button>
+			<button type="button" id="roll_btn">Roll</button>
+			<button type="button" id="stop_roll_btn">Stop Rolling</button>
+		</form>
+
+		<table id="players">
+		</table>
 	</div>
-
-	<canvas id="dice"></canvas>
-
-	<form id="game_controls">
-		<button type="button" id="start_btn">Start Game</button>
-		<button type="button" id="roll_btn">Roll</button>
-		<button type="button" id="stop_roll_btn">Stop Rolling</button>
-	</form>
-
-	<table id="players">
-	</table>
 
 	<div id="members">
+		Who's here
 		<ul id="member_list">
 		</ul>
 	</div>
-
-	<pre id="debug_console"></pre>
 </div>
+
+<pre id="debug_console"></pre>
 
 <footer>
 	<p id="copyright">&copy; {COPYRIGHT}</p>
