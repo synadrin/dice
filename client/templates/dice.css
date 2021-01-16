@@ -1,4 +1,42 @@
+body {
+	max-width: 640px;
+	margin: auto;
+}
+
+h1 {
+	margin: auto;
+	text-align: center;
+}
+
 #error_msgs {
 	background: red;
 	color: white;
+}
+
+canvas {
+	width: 100%;
+	image-rendering: -moz-crisp-edges;
+	image-rendering: -webkit-crisp-edges;
+	image-rendering: crisp-edges;
+	image-rendering: pixelated;
+}
+
+#member_list {
+	width: 100%;
+	display: flex;
+	padding: 0;
+	margin: 0;
+}
+#member_list li {
+	list-style-type: none;
+	padding: 5px;
+}
+#member_list:nth-child(odd) {
+	background: #ccc;
+}
+
+footer {
+	margin: auto;
+	text-align: center;
+	font-size: 90%;
 }
