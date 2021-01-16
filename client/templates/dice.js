@@ -59,6 +59,16 @@ function DiceGame()
 	this.tile_height = 64;
 	this.tile_padding = 8;
 
+	this.currentTime = Date.now();
+	this.roll_animation = {
+		running: false,
+		frame_timeout: 100,
+		total_timeout: 1000,
+		current_timer: 0,
+		frame_timer: 0,
+		request_id: undefined,
+	};
+
 	// TODO: Customisable
 	this.dice_set = 1;
 
@@ -80,6 +90,19 @@ function DiceGame()
 			// TODO: Cleanup?
 			// Switch back to join screen
 		}
+	}
+
+	this.get_random_int = function(min, max)
+	{
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min + 1) + min);
+	}
+
+	this.clear_canvas = function()
+	{
+		that.offscreen_ctx.clearRect(0, 0,
+			that.display.dice_canvas.width, that.display.dice_canvas.height);
 	}
 
 	this.flip_canvas = function()
@@ -114,14 +137,14 @@ function DiceGame()
 
 	this.draw_dice = function()
 	{
-		that.offscreen_ctx.clearRect(0, 0,
-			that.display.dice_canvas.width, that.display.dice_canvas.height);
+		that.clear_canvas();
 
 		dice = that.game_state.dice;
 		for (var i = 0; i < dice.length; i++)
 		{
 			that.draw_die(i, dice[i].value, dice[i].locked);
 		}
+
 		that.flip_canvas();
 	}
 
@@ -222,6 +245,9 @@ function DiceGame()
 			that.show_error_msg(data.msg);
 		} else
 		{
+			// Interrupt rolling animation
+			that.animation_stop();
+
 			if ("room_code" in data)
 			{
 				that.room_code = data.room_code;
@@ -247,6 +273,80 @@ function DiceGame()
 		}
 
 		that.update_display();
+	}
+
+	this.animation_update = function()
+	{
+		var now = Date.now();
+		var deltaT = now - that.currentTime;
+
+		that.roll_animation.current_timer -= deltaT;
+		that.roll_animation.frame_timer -= deltaT;
+
+		if (that.roll_animation.current_timer <= 0)
+		{
+			that.animation_stop();
+			that.roll();
+		} else if (that.roll_animation.frame_timer <= 0)
+		{
+			that.roll_animation.frame_timer = that.roll_animation.frame_timeout;
+			that.animation_draw();
+		}
+
+		that.currentTime = now;
+	}
+
+	this.animation_draw = function()
+	{
+		that.clear_canvas();
+
+		dice = that.game_state.dice;
+		for (var i = 0; i < dice.length; i++)
+		{
+			if (dice[i].locked)
+			{
+				that.draw_die(i, dice[i].value, dice[i].locked);
+			} else
+			{
+				var value = that.get_random_int(DICE_MIN_VALUE, DICE_MAX_VALUE);
+				that.draw_die(i, value, false);
+			}
+		}
+
+		that.flip_canvas();
+	}
+
+	this.animation_loop = function()
+	{
+		if (that.roll_animation.running)
+		{
+			that.animation_update();
+			that.roll_animation.request_id = window.requestAnimationFrame(
+				that.animation_loop
+			);
+		}
+	}
+
+	this.animation_stop = function()
+	{
+		if (that.roll_animation.running)
+		{
+			window.cancelAnimationFrame(that.roll_animation.request_id);
+			that.roll_animation.request_id = undefined;
+		}
+		that.roll_animation.running = false;
+	}
+
+	this.roll_click = function()
+	{
+		if (!that.roll_animation.running)
+		{
+			that.roll_animation.running = true;
+			that.roll_animation.current_timer = that.roll_animation.total_timeout;
+			that.roll_animation.frame_timer = that.roll_animation.frame_timeout;
+			that.currentTime = Date.now();
+			that.animation_loop();
+		}
 	}
 
 	this.send = function(command)
@@ -299,7 +399,7 @@ function DiceGame()
 
 	// Bind buttons
 	this.controls.start_btn.onclick = this.start_game;
-	this.controls.roll_btn.onclick = this.roll;
+	this.controls.roll_btn.onclick = this.roll_click;
 	this.controls.stop_roll_btn.onclick = this.stop_roll;
 
 	// Update display
