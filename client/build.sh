@@ -34,6 +34,7 @@ mkdir -p "${OUTPUT_DIR}"
 cp -v "${TEMPLATES_DIR}"/*.{css,js,png} "${OUTPUT_DIR}/"
 
 indexContent=$(cat "${TEMPLATES_DIR}/index.html")
+indexContent=${indexContent//"{DEBUG}"/"${DEBUG}"}
 indexContent=${indexContent//"{SITENAME}"/"${SITENAME}"}
 indexContent=${indexContent//"{SITEURL}"/"${SITEURL}"}
 indexContent=${indexContent//"{COPYRIGHT}"/"${COPYRIGHT}"}
