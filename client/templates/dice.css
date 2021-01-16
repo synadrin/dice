@@ -1,6 +1,10 @@
 body {
+	min-width: 370px;
 	max-width: 640px;
+	width: 100%;
 	margin: auto;
+	font-family: Verdana, sans-serif;
+	font-size: 14pt;
 }
 
 h1 {
@@ -13,12 +17,67 @@ h1 {
 	color: white;
 }
 
+#signin {
+}
+#signin label {
+	display: block;
+	width: 90%;
+	margin: 0.5em auto;
+	text-align: center;
+}
+#signin input[type=text] {
+	display: block;
+	width: 90%;
+	height: 1.5em;
+	margin: auto;
+	font-size: 1.25em;
+}
+#signin button {
+	display: block;
+	margin: 0.5em auto;
+}
+
+button {
+	display: inline-block;
+	width: 30%;
+	padding: 0.25em;
+	font-size: 1.25em;
+	border-radius: 15px;
+}
+
+#room_info {
+	border-bottom: thick solid;
+	background: #bbb;
+}
+
+#turn_info span {
+	width: 100%;
+}
+#turn {
+	width: 30%;
+}
+#current_turn_name {
+	font-weight: bold;
+}
+#current_score {
+	font-weight: bold;
+}
+#last_roll_score {
+	font-weight: bold;
+}
+
 canvas {
 	width: 100%;
 	image-rendering: -moz-crisp-edges;
 	image-rendering: -webkit-crisp-edges;
 	image-rendering: crisp-edges;
 	image-rendering: pixelated;
+}
+
+#game_controls {
+	padding: 2%;
+}
+#game_controls button {
 }
 
 #member_list {
@@ -31,7 +90,7 @@ canvas {
 	list-style-type: none;
 	padding: 5px;
 }
-#member_list:nth-child(odd) {
+#member_list li:nth-child(odd) {
 	background: #ccc;
 }
 
