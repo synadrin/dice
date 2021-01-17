@@ -1,13 +1,13 @@
 #!/bin/bash
 
 function show_help {
-	echo "${0} -c config_file -o output_dir"
+	echo "${0} -c config_file"
 }
 
 
 CONFIG_FILE=""
 
-while getopts "c:o:" option; do
+while getopts "c:" option; do
 	case "${option}" in
 		c)
 			CONFIG_FILE=${OPTARG}

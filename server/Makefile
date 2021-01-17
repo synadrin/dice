@@ -1,8 +1,9 @@
 PY?=python3
+HG?=hg
 
 BASEDIR=$(CURDIR)
-BUILD_SCRIPT=$(BASEDIR)/build.sh
-OUTPUTDIR=$(BASEDIR)/output
+SERVE_SCRIPT=$(BASEDIR)/serve.sh
+OUTPUTDIR=$(BASEDIR)/deb-pkg
 CONFFILE=$(BASEDIR)/dev.conf
 PUBLISHCONF=$(BASEDIR)/pub.conf
 
@@ -15,17 +16,22 @@ help:
 	@echo '   make publish                        generate using production settings '
 	@echo '   make serve                          start websockets server            '
 	@echo '   make test                           generate and serve the website     '
+	@echo '   make deb                            create debian pacakge              '
 	@echo '                                                                          '
 
 clean:
 	[ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)
 
 serve:
-	$(BUILD_SCRIPT) -o $(OUTPUTDIR) -c $(CONFFILE)
+	$(SERVE_SCRIPT) -c $(CONFFILE)
 
 test: clean serve
 
 publish:
-	$(BUILD_SCRIPT) -o $(OUTPUTDIR) -c $(PUBLISHCONF)
+	$(SERVE_SCRIPT) -c $(PUBLISHCONF)
 
-.PHONY: html help clean serve publish
+# Requires build-essential
+deb:
+	echo "test"
+
+.PHONY: html help clean serve publish deb
