@@ -1,7 +1,7 @@
 PY?=python3
-HG?=hg
 
 BASEDIR=$(CURDIR)
+BUILD_SCRIPT=$(BASEDIR)/build-deb.sh
 SERVE_SCRIPT=$(BASEDIR)/serve.sh
 OUTPUTDIR=$(BASEDIR)/deb-pkg
 CONFFILE=$(BASEDIR)/dev.conf
@@ -21,6 +21,7 @@ help:
 
 clean:
 	[ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)
+	rm *.deb
 
 serve:
 	$(SERVE_SCRIPT) -c $(CONFFILE)
@@ -32,6 +33,6 @@ publish:
 
 # Requires build-essential
 deb:
-	echo "test"
+	$(BUILD_SCRIPT) -c $(PUBLISHCONF) -o $(OUTPUTDIR)
 
 .PHONY: html help clean serve publish deb
