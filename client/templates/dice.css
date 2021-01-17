@@ -80,6 +80,25 @@ canvas {
 #game_controls button {
 }
 
+#players {
+	border-collapse: collapse;
+	border-spacing: 0;
+	border: 0;
+}
+#players .current_turn {
+	background: #0bd;
+}
+#players td {
+	padding: 5px;
+}
+#players .player_turn {
+	width: 10%;
+}
+#players .player_name,
+#players .player_score {
+	width: 40%;
+}
+
 #member_list {
 	width: 100%;
 	display: flex;

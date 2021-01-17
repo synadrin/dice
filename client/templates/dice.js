@@ -40,6 +40,7 @@ function DiceGame()
 		current_score: document.getElementById("current_score"),
 		last_roll_score: document.getElementById("last_roll_score"),
 		dice_canvas: document.getElementById("dice"),
+		players: document.getElementById("players"),
 		debug_console: document.getElementById("debug_console"),
 	};
 
@@ -87,8 +88,9 @@ function DiceGame()
 
 		this.websocket.onclose = function()
 		{
-			// TODO: Cleanup?
 			// Switch back to join screen
+			that.in_room = false;
+			that.update_display();
 		}
 	}
 
@@ -204,7 +206,40 @@ function DiceGame()
 				that.draw_dice();
 
 				// Players
-				//TODO
+				while (that.display.players.lastChild)
+				{
+					that.display.players.removeChild(
+						that.display.players.lastChild
+					);
+				}
+				var players = that.game_state.players;
+				for (var i = 0; i < players.length; i++)
+				{
+					var row = document.createElement("tr");
+					var td_turn = document.createElement("td");
+					var td_name = document.createElement("td");
+					var td_score = document.createElement("td");
+					td_turn.className = "player_turn";
+					if (that.game_state.current_turn == i)
+					{
+						td_turn.appendChild(document.createTextNode(
+							">>>"
+						));
+						row.className = "current_turn";
+					}
+					td_name.className = "player_name";
+					td_name.appendChild(document.createTextNode(
+						players[i].name
+					));
+					td_score.className = "player_score";
+					td_score.appendChild(document.createTextNode(
+						players[i].score
+					));
+					row.appendChild(td_turn);
+					row.appendChild(td_name);
+					row.appendChild(td_score);
+					that.display.players.appendChild(row);
+				}
 			}
 
 			// TODO: Game Over display?
