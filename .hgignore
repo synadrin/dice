@@ -1,3 +1,5 @@
 \.swp$
 ^client/html.*$
 \.pyc$
+^server/deb-pkg.*$
+\.deb$
