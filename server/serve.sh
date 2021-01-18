@@ -30,4 +30,5 @@ export WEBSOCKET_HOSTNAME
 export WEBSOCKET_PORT
 export WEBSOCKET_USE_TLS
 export WEBSOCKET_CERT_FILE
+export WEBSOCKET_CERT_KEY_FILE
 python3 -u "${TOP_DIR}/dice_server.py"

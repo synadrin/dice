@@ -4,6 +4,7 @@ import json
 import logging
 import os
 import room
+import ssl
 import websockets
 
 
@@ -12,11 +13,12 @@ class NoSuchRoomError(Exception):
 
 
 class DiceServer:
-    def __init__(self, hostname, port, use_tls, cert_file):
+    def __init__(self, hostname, port, use_tls, cert_file, cert_key_file):
         self.hostname = hostname
         self.port = port
         self.use_tls = use_tls
         self.cert_file = cert_file
+        self.cert_key_file = cert_key_file
         self.ws_server = None
 
         self.rooms = {}
@@ -157,8 +159,14 @@ class DiceServer:
             await self.unregister_connection(room_code, name)
 
     def start(self):
-        self.ws_server = websockets.serve(self.consumer_handler,
-                self.hostname, self.port)
+        if self.use_tls:
+            ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+            ssl_context.load_cert_chain(self.cert_file, self.cert_key_file)
+            self.ws_server = websockets.serve(self.consumer_handler,
+                    self.hostname, self.port, ssl=ssl_context)
+        else:
+            self.ws_server = websockets.serve(self.consumer_handler,
+                    self.hostname, self.port)
 
         asyncio.get_event_loop().run_until_complete(self.ws_server)
         asyncio.get_event_loop().run_forever()
@@ -170,6 +178,7 @@ if __name__ == "__main__":
     USE_TLS_TEXT = os.getenv("WEBSOCKET_USE_TLS", "no")
     USE_TLS = (USE_TLS_TEXT == "yes")
     CERT_FILE = os.getenv("WEBSOCKET_CERT_FILE", "")
+    CERT_KEY_FILE = os.getenv("WEBSOCKET_CERT_KEY_FILE", "")
     DEBUG = os.getenv("DEBUG", False)
 
     logLevel = logging.INFO
@@ -177,5 +186,5 @@ if __name__ == "__main__":
         logLevel = logging.DEBUG
     logging.basicConfig(format="[%(asctime)s] %(message)s", level=logLevel)
 
-    ds = DiceServer(HOST, PORT, USE_TLS, CERT_FILE)
+    ds = DiceServer(HOST, PORT, USE_TLS, CERT_FILE, CERT_KEY_FILE)
     ds.start()
