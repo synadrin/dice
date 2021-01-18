@@ -1,5 +1,11 @@
 var dg = undefined;
 
+function dismiss_error(id)
+{
+	var elem = document.getElementById(id);
+	elem.remove();
+}
+
 function DiceGame()
 {
 	var that = this;
@@ -29,7 +35,10 @@ function DiceGame()
 	this.controls.start_btn.disabled = true;
 	this.controls.roll_btn.disabled = true;
 	this.controls.stop_roll_btn.disabled = true;
+
+	this.last_error_no = 0;
 	this.display = {
+		error_msgs: document.getElementById("error_msgs"),
 		sign_in: document.getElementById("signin"),
 		game_room: document.getElementById("game_room"),
 		player_name: document.getElementById("player_name"),
@@ -397,7 +406,24 @@ function DiceGame()
 
 	this.show_error_msg = function(error_msg)
 	{
-		// TODO: Display at top of the screen
+		var error_no = ++that.last_error_no;
+		var d = document.createElement("div");
+		var p = document.createElement("p");
+		var x = document.createElement("a");
+
+		var msg_id = "error_msg_id" + error_no;
+		d.id = msg_id;
+		d.className = "error_msg";
+
+		x.setAttribute("href", "javascript:dismiss_error('" + msg_id + "');");
+		x.appendChild(document.createTextNode("X"));
+
+		p.appendChild(document.createTextNode(error_msg));
+
+		d.appendChild(x);
+		d.appendChild(p);
+		that.display.error_msgs.appendChild(d);
+
 		if (typeof DEBUG !== 'undefined' && DEBUG)
 		{
 			console.log(error_msg);
