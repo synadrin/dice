@@ -1,0 +1,18 @@
+[Unit]
+Description=dice
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Environment=DEBUG={DEBUG}
+Environment=WEBSOCKET_HOSTNAME={WEBSOCKET_HOSTNAME}
+Environment=WEBSOCKET_PORT={WEBSOCKET_PORT}
+Environment=WEBSOCKET_USE_TLS={WEBSOCKET_USE_TLS}
+Environment=WEBSOCKET_CERT_FILE={WEBSOCKET_CERT_FILE}
+WorkingDirectory=/opt/dice
+ExecStart=/usr/bin/python3 -u /opt/dice/dice_server.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

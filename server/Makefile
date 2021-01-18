@@ -21,7 +21,7 @@ help:
 
 clean:
 	[ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)
-	rm *.deb
+	rm -f $(BASEDIR)/*.deb
 
 serve:
 	$(SERVE_SCRIPT) -c $(CONFFILE)
