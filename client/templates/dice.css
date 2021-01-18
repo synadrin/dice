@@ -47,6 +47,13 @@ button {
 	vertical-align: top;
 }
 
+#winner_overlay {
+}
+.winner_text {
+}
+#winner_name {
+}
+
 #room_info {
 	border-bottom: thick solid;
 	background: #ddd;
