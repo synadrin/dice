@@ -23,7 +23,8 @@ h1 {
 	margin: 0;
 	padding: 0.5em 2.5em 0.5em 0.5em;
 }
-#error_msgs .error_msg a {
+
+a.close_btn {
 	display: block;
 	float: right;
 	color: white;
@@ -67,20 +68,22 @@ button {
 
 #winner_overlay {
 	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
+	top: 2em;
+	left: 2em;
+	bottom: 2em;
+	right: 2em;
 	margin: auto;
-	padding: 2em;
 	border: thin solid;
 	border-radius: 15px;
 	background: #2d9;
+	text-align: center;
 }
 .winner_text {
+	font-size: 150%;
 }
 #winner_name {
 	font-size: 200%;
+	font-weight: bold;
 }
 
 #room_info {
