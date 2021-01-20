@@ -53,6 +53,7 @@ function DiceGame()
 		players: document.getElementById("players"),
 		winner_overlay: document.getElementById("winner_overlay"),
 		winner_name: document.getElementById("winner_name"),
+		winner_close_btn: document.getElementById("winner_close_btn"),
 		debug_console: document.getElementById("debug_console"),
 	};
 
@@ -175,19 +176,22 @@ function DiceGame()
 		that.can_roll = false;
 		that.can_stop = false;
 
-		// Is the game over?
-		if ("game_over" in new_state && new_state.game_over)
+		if (new_state != null)
 		{
-			if (typeof DEBUG !== 'undefined' && DEBUG)
+			// Is the game over?
+			if ("game_over" in new_state && new_state.game_over)
 			{
-				console.log("Game Over");
+				if (typeof DEBUG !== "undefined" && DEBUG)
+				{
+					console.log("Game Over");
+				}
+			// Is it our turn?
+			} else if ("current_turn_name" in new_state
+				&& new_state.current_turn_name == that.name)
+			{
+				that.can_roll = true;
+				that.can_stop = ("can_stop" in new_state && new_state.can_stop);
 			}
-		// Is it our turn?
-		} else if ("current_turn_name" in new_state
-			&& new_state.current_turn_name == that.name)
-		{
-			that.can_roll = true;
-			that.can_stop = ("can_stop" in new_state && new_state.can_stop);
 		}
 
 		that.game_state = new_state;
@@ -210,7 +214,7 @@ function DiceGame()
 			that.controls.roll_btn.disabled = !that.can_roll;
 			that.controls.stop_roll_btn.disabled = !that.can_stop;
 
-			if (that.is_game_active)
+			if (that.game_exists)
 			{
 				// Game info
 				that.display.current_turn_name.innerHTML
@@ -258,15 +262,15 @@ function DiceGame()
 					row.appendChild(td_score);
 					that.display.players.appendChild(row);
 				}
-			}
 
-			// Winner display
-			if ("game_over" in that.game_state && that.game_state.game_over
-				&& !that.winner_notice_dismissed)
-			{
-				that.display.winner_name.innerHTML = that.game_state.winner;
-				that.display.winner_close_btn.onclick = that.dismiss_winner;
-				that.display.winner_overlay.style.display = "initial";
+				// Winner display
+				if ("game_over" in that.game_state && that.game_state.game_over
+					&& !that.winner_notice_dismissed)
+				{
+					that.display.winner_name.innerHTML = that.game_state.winner;
+					that.display.winner_close_btn.onclick = that.dismiss_winner;
+					that.display.winner_overlay.style.display = "initial";
+				}
 			}
 
 			// Room member list
@@ -291,7 +295,7 @@ function DiceGame()
 			that.display.game_room.style.display = "none";
 		}
 
-		if (typeof DEBUG !== 'undefined' && DEBUG)
+		if (typeof DEBUG !== "undefined" && DEBUG)
 		{
 			that.display.debug_console.textContent = that.last_message;
 		}
@@ -327,15 +331,15 @@ function DiceGame()
 			}
 
 			// Parse game state
+			that.game_exists = "current_game" in data && data.current_game != null;
 			that.is_game_active = ("is_game_active" in data && data.is_game_active
-				&& "current_game" in data && data.current_game != null)
-			if (that.is_game_active)
-			{
-				that.update_game_state(data.current_game);
-			} else
-			{
-				that.can_start = ("can_start" in data && data.can_start);
-			}
+				&& that.game_exists)
+
+			// Update the current state
+			that.update_game_state(data.current_game);
+
+			that.can_start = (!that.is_game_active
+				&& "can_start" in data && data.can_start);
 		}
 
 		that.update_display();
@@ -441,7 +445,7 @@ function DiceGame()
 		d.appendChild(p);
 		that.display.error_msgs.appendChild(d);
 
-		if (typeof DEBUG !== 'undefined' && DEBUG)
+		if (typeof DEBUG !== "undefined" && DEBUG)
 		{
 			console.log(error_msg);
 		}
