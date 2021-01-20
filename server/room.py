@@ -63,7 +63,7 @@ class Room:
 
     def get_state(self):
         game_state = None
-        if self.is_game_active:
+        if self.current_game:
             game_state = self.current_game.get_state()
         can_start = len(self.members) >= dice_game.MINIMUM_PLAYERS \
             and not self.is_game_active

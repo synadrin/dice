@@ -157,8 +157,9 @@ class DiceServer:
                     error_msg = "Problem with request"
                     logging.error("Problem with request: {}: {}".format(data, e))
                     await self.send_error_msg(websocket, error_msg)
-                except (ConnectionClosed, ConnectionClosedError, \
-                        ConnectionClosedOK) as e:
+                except (websockets.exceptions.ConnectionClosed, \
+                        websockets.exceptions.ConnectionClosedError, \
+                        websockets.exceptions.ConnectionClosedOK) as e:
                     logging.debug("Connection closed: {}".format(e))
                     await self.unregister_connection(room_code, name)
         finally:
