@@ -92,6 +92,9 @@ class Room:
         except KeyError:
             pass
 
+    def is_empty(self):
+        return len(self.members) == 0
+
     def start_new_game(self):
         if self.is_game_active:
             raise GameAlreadyRunningError
