@@ -42,6 +42,12 @@ class DiceServer:
         if room_code in self.rooms:
             self.rooms[room_code].leave(name)
             logging.info("Disconnected: {}/{}".format(room_code, name))
+            if self.rooms[room_code].is_empty():
+                try:
+                    del self.rooms[room_code]
+                    logging.info("Room closed: {}".format(room_code))
+                except KeyError:
+                    pass
             await self.notify_room(room_code)
 
     async def notify_room(self, room_code):
