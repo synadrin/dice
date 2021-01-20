@@ -37,6 +37,7 @@ function DiceGame()
 	this.controls.stop_roll_btn.disabled = true;
 
 	this.last_error_no = 0;
+	this.winner_notice_dismissed = false;
 	this.display = {
 		error_msgs: document.getElementById("error_msgs"),
 		sign_in: document.getElementById("signin"),
@@ -50,6 +51,8 @@ function DiceGame()
 		last_roll_score: document.getElementById("last_roll_score"),
 		dice_canvas: document.getElementById("dice"),
 		players: document.getElementById("players"),
+		winner_overlay: document.getElementById("winner_overlay"),
+		winner_name: document.getElementById("winner_name"),
 		debug_console: document.getElementById("debug_console"),
 	};
 
@@ -159,6 +162,13 @@ function DiceGame()
 		that.flip_canvas();
 	}
 
+	this.dismiss_winner = function()
+	{
+		that.display.winner_overlay.style.display = "none";
+		that.winner_notice_dismissed = true;
+		return false;
+	}
+
 	this.update_game_state = function(new_state)
 	{
 		that.can_start = false;
@@ -172,7 +182,6 @@ function DiceGame()
 			{
 				console.log("Game Over");
 			}
-			//TODO: Game Over screen
 		// Is it our turn?
 		} else if ("current_turn_name" in new_state
 			&& new_state.current_turn_name == that.name)
@@ -251,7 +260,14 @@ function DiceGame()
 				}
 			}
 
-			// TODO: Game Over display?
+			// Winner display
+			if ("game_over" in that.game_state && that.game_state.game_over
+				&& !that.winner_notice_dismissed)
+			{
+				that.display.winner_name.innerHTML = that.game_state.winner;
+				that.display.winner_close_btn.onclick = that.dismiss_winner;
+				that.display.winner_overlay.style.display = "initial";
+			}
 
 			// Room member list
 			while (that.display.member_list.lastChild)
@@ -416,6 +432,7 @@ function DiceGame()
 		d.className = "error_msg";
 
 		x.setAttribute("href", "javascript:dismiss_error('" + msg_id + "');");
+		x.className = "close_btn";
 		x.appendChild(document.createTextNode("X"));
 
 		p.appendChild(document.createTextNode(error_msg));
@@ -445,6 +462,7 @@ function DiceGame()
 
 	this.start_game = function()
 	{
+		that.winner_notice_dismissed = false;
 		var command = {
 			action: "start_game"
 		}
