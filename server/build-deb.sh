@@ -15,6 +15,7 @@ function parse_file {
 	fileContent=${fileContent//"{WEBSOCKET_PORT}"/"${WEBSOCKET_PORT}"}
 	fileContent=${fileContent//"{WEBSOCKET_USE_TLS}"/"${WEBSOCKET_USE_TLS}"}
 	fileContent=${fileContent//"{WEBSOCKET_CERT_FILE}"/"${WEBSOCKET_CERT_FILE}"}
+	fileContent=${fileContent//"{WEBSOCKET_CERT_KEY_FILE}"/"${WEBSOCKET_CERT_KEY_FILE}"}
 	fileContent=${fileContent//"{VERSION}"/"${VERSION}"}
 	echo "${fileContent}" > "${2}"
 }
