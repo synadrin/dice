@@ -49,6 +49,6 @@ mkdir -p "${OUTPUT_DIR}/DEBIAN" "${OUTPUT_DIR}/opt/dice"
 
 parse_file "${TOP_DIR}/control.in" "${OUTPUT_DIR}/DEBIAN/control"
 parse_file "${TOP_DIR}/dice.service.in" "${OUTPUT_DIR}/opt/dice/dice.service"
-cp -v "${TOP_DIR}/dice_game.py" "${TOP_DIR}/dice_server.py" "${OUTPUT_DIR}/opt/dice/"
+cp -v "${TOP_DIR}/"*.py "${OUTPUT_DIR}/opt/dice/"
 
 dpkg-deb --build "${OUTPUT_DIR}" "${TOP_DIR}/"
