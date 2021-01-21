@@ -286,6 +286,11 @@ function DiceGame()
 					that.display.winner_name.innerHTML = that.game_state.winner;
 					that.display.winner_close_btn.onclick = that.dismiss_winner;
 					that.display.winner_overlay.style.display = "initial";
+				} else if ("game_over" in that.game_state
+					&& !that.game_state.game_over)
+				{
+					// In case the overlay is still up from the last game
+					that.winner_notice_dismissed = false;
 				}
 			}
 
