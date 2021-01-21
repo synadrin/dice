@@ -100,7 +100,8 @@ class Room:
             raise GameAlreadyRunningError
 
         if self.current_game:
-            self.game_history.append(self.current_game)
+            self.game_history.append(self.current_game.get_state())
+            self.current_game = None
 
         self.current_game = dice_game.DiceGame(list(self.members))
         self.is_game_active = True
