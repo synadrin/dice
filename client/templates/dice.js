@@ -13,13 +13,15 @@ function DiceGame()
 	var DICE_MAX_VALUE = 6;
 	var DICE_MIN_VALUE = 1;
 
-	this.websocket = undefined;
+	this.websocket = null;
+	this.reconnect_delay = 10000; // Milliseconds
 	this.name = "";
 	this.room_code = "";
 	this.last_message = "";
 	this.in_room = false;
 
 	this.is_game_active = false;
+	this.can_join = false;
 	this.can_start = false;
 	this.can_roll = false;
 	this.can_stop = false;
@@ -28,6 +30,7 @@ function DiceGame()
 	this.game_state = null;
 
 	this.controls = {
+		join_btn: document.getElementById("join_btn"),
 		start_btn: document.getElementById("start_btn"),
 		roll_btn: document.getElementById("roll_btn"),
 		stop_roll_btn: document.getElementById("stop_roll_btn"),
@@ -86,24 +89,37 @@ function DiceGame()
 	// TODO: Customisable
 	this.dice_set = 1;
 
-	if ("WebSocket" in window)
+	// Continually attempts to connect to the game server
+	this.connect_to_server = function()
 	{
-		this.websocket = new WebSocket(WS_URL);
-
-		this.websocket.onopen = function()
+		if ("WebSocket" in window && that.websocket == null)
 		{
-		}
+			that.websocket = new WebSocket(WS_URL);
 
-		this.websocket.onmessage = function(evt)
-		{
-			that.parse_message(evt.data);
-		}
+			that.websocket.onopen = function(evt)
+			{
+				that.can_join = true;
+				that.update_display();
+			}
 
-		this.websocket.onclose = function()
-		{
-			// Switch back to join screen
-			that.in_room = false;
-			that.update_display();
+			that.websocket.onmessage = function(evt)
+			{
+				that.parse_message(evt.data);
+			}
+
+			that.websocket.onclose = function(evt)
+			{
+				// Switch back to join screen
+				that.in_room = false;
+				that.can_join = false;
+				that.update_display();
+				that.show_error_msg("Connection to server lost; "
+					+ "attempting to reconnect");
+
+				// Attempt to reconnect
+				that.websocket = null;
+				window.setTimeout(that.connect_to_server, that.reconnect_delay);
+			}
 		}
 	}
 
@@ -293,6 +309,7 @@ function DiceGame()
 			// Show sign in form(s)
 			that.display.sign_in.style.display = "initial";
 			that.display.game_room.style.display = "none";
+			that.controls.join_btn.disabled = !that.can_join;
 		}
 
 		if (typeof DEBUG !== "undefined" && DEBUG)
@@ -419,6 +436,13 @@ function DiceGame()
 		}
 	}
 
+	this.join_click = function()
+	{
+		name = document.getElementById("player_name_input").value;
+		room_code = document.getElementById("room_code_input").value;
+		that.join(name, room_code);
+	}
+
 	this.send = function(command)
 	{
 		return that.websocket.send(JSON.stringify(command));
@@ -490,6 +514,7 @@ function DiceGame()
 	}
 
 	// Bind buttons
+	this.controls.join_btn.onclick = this.join_click;
 	this.controls.start_btn.onclick = this.start_game;
 	this.controls.roll_btn.onclick = this.roll_click;
 	this.controls.stop_roll_btn.onclick = this.stop_roll;
@@ -501,13 +526,7 @@ function DiceGame()
 function init()
 {
 	dg = new DiceGame();
-
-	document.getElementById("join_btn").onclick = function(evt)
-	{
-		name = document.getElementById("player_name_input").value;
-		room_code = document.getElementById("room_code_input").value;
-		dg.join(name, room_code);
-	}
+	dg.connect_to_server();
 }
 
 window.addEventListener("load", init, false);
