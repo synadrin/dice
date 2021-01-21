@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 #User=www-data
-Environment=DEBUG={DEBUG}
+#Environment=DEBUG={DEBUG}
 Environment=WEBSOCKET_HOSTNAME={WEBSOCKET_HOSTNAME}
 Environment=WEBSOCKET_PORT={WEBSOCKET_PORT}
 Environment=WEBSOCKET_USE_TLS={WEBSOCKET_USE_TLS}
