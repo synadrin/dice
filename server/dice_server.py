@@ -69,7 +69,13 @@ class DiceServer:
             raise NoSuchRoomError(room_code)
 
         # Raises dice_game.InsufficientPlayersError
+        logging.debug("Room before start: {}".format(
+            self.rooms[room_code].get_state())
+        )
         self.rooms[room_code].start_new_game()
+        logging.debug("Room after start: {}".format(
+            self.rooms[room_code].get_state())
+        )
         logging.info("Game started: {}".format(room_code))
 
         await self.notify_room(room_code)
@@ -157,12 +163,11 @@ class DiceServer:
                     error_msg = "Problem with request"
                     logging.error("Problem with request: {}: {}".format(data, e))
                     await self.send_error_msg(websocket, error_msg)
-                except (websockets.exceptions.ConnectionClosed, \
-                        websockets.exceptions.ConnectionClosedError, \
-                        websockets.exceptions.ConnectionClosedOK) as e:
+                except websockets.exceptions.ConnectionClosed as e:
                     logging.debug("Connection closed: {}".format(e))
                     await self.unregister_connection(room_code, name)
         finally:
+            logging.debug("Finally: {}/{}".format(room_code, name))
             await self.unregister_connection(room_code, name)
 
     def start(self):
