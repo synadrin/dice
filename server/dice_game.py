@@ -55,6 +55,12 @@ class DiceGame:
         self.last_roll_score = -1
         self.can_stop = False
 
+        self.last_action = {
+            "type": "",
+            "result": "",
+            "player_name": "",
+        }
+
         self.winner = None
 
     def get_current_turn_name(self):
@@ -75,6 +81,7 @@ class DiceGame:
             "max_dice": self.max_dice,
             "available_dice": self.available_dice,
             "last_roll_score": self.last_roll_score,
+            "last_action": self.last_action,
             "can_stop": self.can_stop,
             "dice": self.dice,
             "current_score": self.current_score,
@@ -96,15 +103,20 @@ class DiceGame:
             die["locked"] = False
             die["counted"] = False
 
-    def bust(self):
-        logging.debug("bust")
+    def new_turn(self):
         self.current_score = 0
         self.reset_dice()
         self.next_player()
 
+    def bust(self):
+        logging.debug("bust")
+        self.last_action["result"] = "bust"
+        self.new_turn()
+
     def win(self):
         self.winner = self.get_current_turn_name()
         self.players[self.current_turn]["score"] = self.score_win
+        self.last_action["result"] = "win"
         self.game_over = True
         self.can_stop = False
         logging.debug("winner: {}".format(self.winner))
@@ -112,6 +124,9 @@ class DiceGame:
     def roll(self):
         if self.game_over:
             raise GameOverError
+
+        self.last_action["type"] = "roll"
+        self.last_action["player_name"] = self.get_current_turn_name()
 
         # Roll available dice
         for die in self.dice:
@@ -176,9 +191,12 @@ class DiceGame:
             # Win if the player hits the target score exactly
             self.win()
         else:
+            self.last_action["result"] = "score"
+
             if self.available_dice == 0:
                 # Player has control of the dice, reset to full amount for next roll
                 self.reset_dice()
+                self.last_action["result"] = "control"
 
             if player_new_score >= self.score_on_the_board:
                 # Player can only stop rolling if they hit a minimum overall score
@@ -189,8 +207,13 @@ class DiceGame:
             raise CantStopError
 
         logging.debug("stop_roll")
+
+        self.last_action["type"] = "stop_roll"
+        self.last_action["result"] = ""
+        self.last_action["player_name"] = self.get_current_turn_name()
+
         self.players[self.current_turn]["score"] += self.current_score
         if self.current_score >= self.score_to_pass:
             self.next_player()
         else:
-            self.bust()
+            self.new_turn()
