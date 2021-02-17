@@ -132,7 +132,7 @@ class DiceGame:
         for die in self.dice:
             if not die["locked"]:
                 die["value"] = random.randint(DICE_MIN_VALUE, DICE_MAX_VALUE)
-                die["counted"] = False
+            die["counted"] = False
         self.total_roll_count += 1
 
         # Calculate score
