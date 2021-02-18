@@ -40,6 +40,7 @@ class DiceGame:
 
         self.current_turn = 0
         self.current_round = 1
+        self.previous_turn_name = ""
         self.score_win = SCORE_WIN
         self.score_on_the_board = SCORE_ON_THE_BOARD
         self.score_to_pass = SCORE_TO_PASS
@@ -74,6 +75,7 @@ class DiceGame:
             "current_turn": self.current_turn,
             "current_turn_name": current_turn_name,
             "current_round": self.current_round,
+            "previous_turn_name": self.previous_turn_name,
             "total_roll_count": self.total_roll_count,
             "score_win": self.score_win,
             "score_on_the_board": self.score_on_the_board,
@@ -89,6 +91,7 @@ class DiceGame:
         }
 
     def next_player(self):
+        self.previous_turn_name = self.get_current_turn_name()
         self.current_turn += 1
         if self.current_turn >= len(self.players):
             self.current_turn = 0
