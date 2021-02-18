@@ -52,6 +52,8 @@ function DiceGame()
 		current_turn_name: document.getElementById("current_turn_name"),
 		current_score: document.getElementById("current_score"),
 		last_roll_score: document.getElementById("last_roll_score"),
+		previous_turn_name: document.getElementById("previous_turn_name"),
+		previous_turn_result: document.getElementById("previous_turn_result"),
 		dice_canvas: document.getElementById("dice"),
 		players: document.getElementById("players"),
 		winner_overlay: document.getElementById("winner_overlay"),
@@ -239,6 +241,10 @@ function DiceGame()
 					= that.game_state.current_score;
 				that.display.last_roll_score.innerHTML
 					= that.game_state.last_roll_score;
+				that.display.previous_turn_name.innerHTML
+					= that.game_state.previous_turn_name;
+				that.display.previous_turn_result.innerHTML
+					= that.game_state.previous_turn_result;
 
 				// Dice
 				that.draw_dice();

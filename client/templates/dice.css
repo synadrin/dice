@@ -99,25 +99,27 @@ button {
 
 #turn_info {
 	width: 100%;
-	padding: 2%;
 }
-#turn,
-#score,
-#last_roll {
-	display: inline-block;
-	width: 30%;
-	margin: auto;
-	vertical-align: top;
+#turn_info div {
+	box-sizing: border-box;
+	padding: 10px;
+	float: left;
+	width: 33%;
 	text-align: center;
+}
+#last_roll {
+	font-size: 90%;
 }
 #current_turn_name,
 #current_score,
-#last_roll_score {
+#last_roll_score,
+#previous_turn_label {
 	font-weight: bold;
 }
 
 canvas {
 	width: 100%;
+	clear: both;
 	image-rendering: -moz-crisp-edges;
 	image-rendering: -webkit-crisp-edges;
 	image-rendering: crisp-edges;

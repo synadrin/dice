@@ -41,6 +41,7 @@ class DiceGame:
         self.current_turn = 0
         self.current_round = 1
         self.previous_turn_name = ""
+        self.previous_turn_result = ""
         self.score_win = SCORE_WIN
         self.score_on_the_board = SCORE_ON_THE_BOARD
         self.score_to_pass = SCORE_TO_PASS
@@ -76,6 +77,7 @@ class DiceGame:
             "current_turn_name": current_turn_name,
             "current_round": self.current_round,
             "previous_turn_name": self.previous_turn_name,
+            "previous_turn_result": self.previous_turn_result,
             "total_roll_count": self.total_roll_count,
             "score_win": self.score_win,
             "score_on_the_board": self.score_on_the_board,
@@ -114,6 +116,7 @@ class DiceGame:
     def bust(self):
         logging.debug("bust")
         self.last_action["result"] = "bust"
+        self.previous_turn_result = "busted"
         self.new_turn()
 
     def win(self):
@@ -214,6 +217,7 @@ class DiceGame:
         self.last_action["type"] = "stop_roll"
         self.last_action["result"] = ""
         self.last_action["player_name"] = self.get_current_turn_name()
+        self.previous_turn_result = "+{}".format(self.current_score)
 
         self.players[self.current_turn]["score"] += self.current_score
         if self.current_score >= self.score_to_pass:

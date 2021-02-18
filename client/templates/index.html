@@ -45,15 +45,20 @@
 
 	<div id="game_space">
 		<div id="turn_info">
-			<span id="turn">
+			<div id="turn">
 				<span id="current_turn_name">(nobody)</span>'s turn
-			</span>
-			<span id="score">
-				Score: <span id="current_score">0</span>
-			</span>
-			<span id="last_roll">
-				Last roll: <span id="last_roll_score">0</span>
-			</span>
+			</div>
+			<div id="score">
+				Score: <span id="current_score">0</span><br>
+				<span id="last_roll">
+					(Last roll: <span id="last_roll_score">0</span>)
+				</span>
+			</div>
+			<div id="previous_turn">
+				<span id="previous_turn_label">Last Turn</span><br>
+				<span id="previous_turn_name"></span>
+				<span id="previous_turn_result"></span>
+			</div>
 		</div>
 
 		<canvas id="dice" width="368" height="80"></canvas>
