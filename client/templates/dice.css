@@ -144,7 +144,8 @@ canvas {
 #players td {
 	padding: 1%;
 }
-#players .player_turn {
+#players .player_turn,
+#players .player_place {
 	width: 10%;
 }
 #players .player_name,

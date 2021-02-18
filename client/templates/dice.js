@@ -6,6 +6,26 @@ function dismiss_error(id)
 	elem.remove();
 }
 
+function ordinal_suffix(n)
+{
+	var tens_remainder = n % 10,
+		hundreds_remainder = n % 100;
+
+	if (tens_remainder == 1 && hundreds_remainder != 11)
+	{
+		return n + "st";
+	}
+	if (tens_remainder == 2 && hundreds_remainder != 12)
+	{
+		return n + "nd";
+	}
+	if (tens_remainder == 3 && hundreds_remainder != 13)
+	{
+		return n + "rd";
+	}
+	return n + "th";
+}
+
 function DiceGame()
 {
 	var that = this;
@@ -263,6 +283,7 @@ function DiceGame()
 					var td_turn = document.createElement("td");
 					var td_name = document.createElement("td");
 					var td_score = document.createElement("td");
+					var td_place = document.createElement("td");
 					td_turn.className = "player_turn";
 					if (that.game_state.current_turn == i)
 					{
@@ -279,9 +300,14 @@ function DiceGame()
 					td_score.appendChild(document.createTextNode(
 						players[i].score
 					));
+					td_place.className = "player_place";
+					td_place.appendChild(document.createTextNode(
+						ordinal_suffix(players[i].place)
+					));
 					row.appendChild(td_turn);
 					row.appendChild(td_name);
 					row.appendChild(td_score);
+					row.appendChild(td_place);
 					that.display.players.appendChild(row);
 				}
 

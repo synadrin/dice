@@ -28,15 +28,16 @@ class CantStopError(Exception):
 
 class DiceGame:
     def __init__(self, player_names):
+        num_players = len(player_names)
         if not isinstance(player_names, list):
             raise TypeError
-        if len(player_names) < MINIMUM_PLAYERS:
+        if num_players < MINIMUM_PLAYERS:
             raise InsufficientPlayersError(len(player_names))
 
         random.seed()
 
         random.shuffle(player_names)
-        self.players = [{"name": name, "score": 0} for name in player_names]
+        self.players = [{"name": name, "score": 0, "place": num_players} for name in player_names]
 
         self.current_turn = 0
         self.current_round = 1
