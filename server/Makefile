@@ -16,7 +16,7 @@ help:
 	@echo '   make publish                        generate using production settings '
 	@echo '   make serve                          start websockets server            '
 	@echo '   make test                           generate and serve the website     '
-	@echo '   make deb                            create debian pacakge              '
+	@echo '   make deb                            create debian package              '
 	@echo '                                                                          '
 
 clean:
