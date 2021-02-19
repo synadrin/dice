@@ -13,8 +13,9 @@ h1 {
 }
 
 #error_msgs .error_msg {
+	box-sizing: border-box;
 	padding: 1px;
-	margin: 1%;
+	margin: 5px;
 	border-radius: 5px;
 	background: #d20;
 	color: white;
@@ -88,6 +89,7 @@ button {
 
 #room_info {
 	border-bottom: thick solid;
+	padding: 0.1em;
 	background: #ddd;
 }
 #player_name {
@@ -102,7 +104,7 @@ button {
 }
 #turn_info div {
 	box-sizing: border-box;
-	padding: 10px;
+	padding: 0.2em;
 	float: left;
 	width: 33%;
 	text-align: center;
@@ -142,7 +144,7 @@ canvas {
 	background: #0bd;
 }
 #players td {
-	padding: 1%;
+	padding: 0.2em;
 }
 #players .player_turn,
 #players .player_place {
@@ -153,9 +155,6 @@ canvas {
 	width: 40%;
 }
 
-#members {
-	padding: 2%;
-}
 #member_list {
 	width: 100%;
 	display: flex;
@@ -164,7 +163,7 @@ canvas {
 }
 #member_list li {
 	list-style-type: none;
-	padding: 1%;
+	padding: 0.2em;
 }
 #member_list li:nth-child(odd) {
 	background: #ccc;
