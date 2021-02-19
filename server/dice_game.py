@@ -1,5 +1,6 @@
 from itertools import repeat
 import logging
+from operator import itemgetter
 import random
 
 
@@ -37,7 +38,8 @@ class DiceGame:
         random.seed()
 
         random.shuffle(player_names)
-        self.players = [{"name": name, "score": 0, "place": num_players} for name in player_names]
+        self.players = [{"name": name, "score": 0, "place": 1} \
+            for name in player_names]
 
         self.current_turn = 0
         self.current_round = 1
@@ -93,6 +95,18 @@ class DiceGame:
             "winner": self.winner,
         }
 
+    def update_players_places(self):
+        sorted_players = sorted(
+            [(i, p["score"]) for i, p in enumerate(self.players)],
+            key=itemgetter(1), reverse=True)
+        place = 1
+        last_score = 0
+        for index, score in sorted_players:
+            if score < last_score:
+                place += 1
+            self.players[index]["place"] = place
+            last_score = score
+
     def next_player(self):
         self.previous_turn_name = self.get_current_turn_name()
         self.current_turn += 1
@@ -123,6 +137,7 @@ class DiceGame:
     def win(self):
         self.winner = self.get_current_turn_name()
         self.players[self.current_turn]["score"] = self.score_win
+        self.update_players_places()
         self.last_action["result"] = "win"
         self.game_over = True
         self.can_stop = False
@@ -221,6 +236,7 @@ class DiceGame:
         self.previous_turn_result = "+{}".format(self.current_score)
 
         self.players[self.current_turn]["score"] += self.current_score
+        self.update_players_places()
         if self.current_score >= self.score_to_pass:
             self.next_player()
         else:
