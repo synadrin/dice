@@ -170,6 +170,56 @@ canvas {
 	background: #ccc;
 }
 
+#more_options {
+	margin-top: 1em;
+	padding: 0.4em;
+	background: #ddd;
+}
+input#more_options_toggle {
+	display: none;
+}
+input#more_options_toggle + label {
+	display: block;
+	cursor: pointer;
+	text-align: center;
+}
+input#more_options_toggle + label::before {
+	display: inline-block;
+	margin-right: 0.2em;
+	border: solid;
+	border-width: 0 0.2em 0.2em 0;
+	padding: 0.2em;
+	transition: all .5s ease;
+	content: "";
+	transform: rotate(-45deg);
+}
+input#more_options_toggle:checked + label::before {
+	transform: rotate(45deg);
+}
+#more_options_content {
+	transition: max-height 1.0s ease-out;
+	max-height: 0;
+	overflow: hidden;
+}
+input#more_options_toggle:checked ~ #more_options_content {
+	transition: max-height 1.0s ease-in;
+	max-height: 500px;
+}
+
+#more_options_content label {
+	display: inline-block;
+	box-sizing: border-box;
+	width: 50%;
+	margin: 1em auto;
+	padding: 0.2em;
+	text-align: right;
+}
+
+#end_btn {
+	display: block;
+	margin: auto;
+}
+
 footer {
 	margin: auto;
 	text-align: center;
