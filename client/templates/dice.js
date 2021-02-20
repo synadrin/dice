@@ -329,15 +329,25 @@ function DiceGame()
 					that.notify_player();
 				}
 
-				// Winner display
+				// Game Over display
 				if ("game_over" in that.game_state && that.game_state.game_over
 					&& !that.game_over_notice_dismissed)
 				{
-					that.display.game_over_text.innerHTML = "Winner";
-					that.display.game_over_name.innerHTML = that.game_state.winner;
-					that.display.game_over_close_btn.onclick = that.dismiss_game_over;
-					that.display.game_over_overlay.className = "win";
+					// Game ended early by a player
+					if ("ended" in that.game_state && that.game_state.ended)
+					{
+						that.display.game_over_text.innerHTML = "Game ended by";
+						that.display.game_over_name.innerHTML
+							= that.game_state.ended_by;
+						that.display.game_over_overlay.className = "ended";
+					} else
+					{
+						that.display.game_over_text.innerHTML = "Winner";
+						that.display.game_over_name.innerHTML = that.game_state.winner;
+						that.display.game_over_overlay.className = "win";
+					}
 					that.display.game_over_overlay.style.display = "block";
+					that.display.game_over_close_btn.onclick = that.dismiss_game_over;
 				} else if ("game_over" in that.game_state
 					&& !that.game_state.game_over)
 				{

@@ -77,7 +77,7 @@ button {
 #game_over_overlay .win {
 	background: #2d9;
 }
-#game_over_overlay .early_end {
+#game_over_overlay .ended {
 	background: #ccc;
 }
 .game_over_text {
