@@ -209,11 +209,18 @@ function DiceGame()
 		return false;
 	}
 
+	// Notify this player when it's their turn.
+	this.notify_player = function()
+	{
+		window.navigator.vibrate([200, 100, 200]);
+	}
+
 	this.update_game_state = function(new_state)
 	{
 		that.can_start = false;
 		that.can_roll = false;
 		that.can_stop = false;
+		that.can_newly_roll = false;
 
 		if (new_state != null)
 		{
@@ -230,6 +237,10 @@ function DiceGame()
 			{
 				that.can_roll = true;
 				that.can_stop = ("can_stop" in new_state && new_state.can_stop);
+				// It wasn't our turn last roll, but is now.
+				that.can_newly_roll = ("last_action" in new_state
+					&& "player_name" in new_state.last_action
+					&& new_state.last_action.player_name != that.name)
 			}
 		}
 
@@ -310,6 +321,12 @@ function DiceGame()
 					row.appendChild(td_score);
 					row.appendChild(td_place);
 					that.display.players.appendChild(row);
+				}
+
+				// Notify player if it's their turn (and wasn't last roll)
+				if (that.can_newly_roll)
+				{
+					that.notify_player();
 				}
 
 				// Winner display
