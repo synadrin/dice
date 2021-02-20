@@ -60,7 +60,7 @@ function DiceGame()
 	this.controls.stop_roll_btn.disabled = true;
 
 	this.last_error_no = 0;
-	this.winner_notice_dismissed = false;
+	this.game_over_notice_dismissed = false;
 	this.display = {
 		error_msgs: document.getElementById("error_msgs"),
 		sign_in: document.getElementById("signin"),
@@ -76,9 +76,10 @@ function DiceGame()
 		previous_turn_result: document.getElementById("previous_turn_result"),
 		dice_canvas: document.getElementById("dice"),
 		players: document.getElementById("players"),
-		winner_overlay: document.getElementById("winner_overlay"),
-		winner_name: document.getElementById("winner_name"),
-		winner_close_btn: document.getElementById("winner_close_btn"),
+		game_over_overlay: document.getElementById("game_over_overlay"),
+		game_over_close_btn: document.getElementById("game_over_close_btn"),
+		game_over_text: document.getElementById("game_over_text"),
+		game_over_name: document.getElementById("game_over_name"),
 		debug_console: document.getElementById("debug_console"),
 	};
 
@@ -201,10 +202,10 @@ function DiceGame()
 		that.flip_canvas();
 	}
 
-	this.dismiss_winner = function()
+	this.dismiss_game_over = function()
 	{
-		that.display.winner_overlay.style.display = "none";
-		that.winner_notice_dismissed = true;
+		that.display.game_over_overlay.style.display = "none";
+		that.game_over_notice_dismissed = true;
 		return false;
 	}
 
@@ -313,16 +314,18 @@ function DiceGame()
 
 				// Winner display
 				if ("game_over" in that.game_state && that.game_state.game_over
-					&& !that.winner_notice_dismissed)
+					&& !that.game_over_notice_dismissed)
 				{
-					that.display.winner_name.innerHTML = that.game_state.winner;
-					that.display.winner_close_btn.onclick = that.dismiss_winner;
-					that.display.winner_overlay.style.display = "initial";
+					that.display.game_over_text.innerHTML = "Winner";
+					that.display.game_over_name.innerHTML = that.game_state.winner;
+					that.display.game_over_close_btn.onclick = that.dismiss_game_over;
+					that.display.game_over_overlay.className = "win";
+					that.display.game_over_overlay.style.display = "block";
 				} else if ("game_over" in that.game_state
 					&& !that.game_state.game_over)
 				{
 					// In case the overlay is still up from the last game
-					that.winner_notice_dismissed = false;
+					that.game_over_notice_dismissed = false;
 				}
 			}
 
@@ -527,7 +530,7 @@ function DiceGame()
 
 	this.start_game = function()
 	{
-		that.winner_notice_dismissed = false;
+		that.game_over_notice_dismissed = false;
 		var command = {
 			action: "start_game"
 		}

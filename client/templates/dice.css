@@ -67,22 +67,23 @@ button {
 	vertical-align: top;
 }
 
-#winner_overlay {
-	position: absolute;
-	top: 2em;
-	left: 2em;
-	bottom: 2em;
-	right: 2em;
-	margin: auto;
+#game_over_overlay {
+	width: 100%;
+	margin: 1em auto;
 	border: thin solid;
 	border-radius: 15px;
-	background: #2d9;
 	text-align: center;
 }
-.winner_text {
+#game_over_overlay .win {
+	background: #2d9;
+}
+#game_over_overlay .early_end {
+	background: #ccc;
+}
+.game_over_text {
 	font-size: 150%;
 }
-#winner_name {
+#game_over_name {
 	font-size: 200%;
 	font-weight: bold;
 }
