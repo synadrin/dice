@@ -54,6 +54,7 @@ function DiceGame()
 		start_btn: document.getElementById("start_btn"),
 		roll_btn: document.getElementById("roll_btn"),
 		stop_roll_btn: document.getElementById("stop_roll_btn"),
+		dice_set_choice: document.getElementById("dice_set_choice"),
 	};
 	this.controls.start_btn.disabled = true;
 	this.controls.roll_btn.disabled = true;
@@ -109,7 +110,6 @@ function DiceGame()
 		request_id: undefined,
 	};
 
-	// TODO: Customisable
 	this.dice_set = 1;
 
 	// Continually attempts to connect to the game server
@@ -580,11 +580,20 @@ function DiceGame()
 		that.send(command);
 	}
 
+	this.dice_set_selected = function(evt)
+	{
+		that.dice_set = evt.target.value;
+		that.update_display();
+	}
+
 	// Bind buttons
 	this.controls.join_btn.onclick = this.join_click;
 	this.controls.start_btn.onclick = this.start_game;
 	this.controls.roll_btn.onclick = this.roll_click;
 	this.controls.stop_roll_btn.onclick = this.stop_roll;
+
+	// Bind selection
+	this.controls.dice_set_choice.onchange = this.dice_set_selected;
 
 	// Update display
 	this.update_display();
