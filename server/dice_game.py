@@ -49,6 +49,9 @@ class DiceGame:
         self.score_on_the_board = SCORE_ON_THE_BOARD
         self.score_to_pass = SCORE_TO_PASS
         self.game_over = False
+        self.winner = None
+        self.ended = False
+        self.ended_by = None
 
         self.max_dice = DICE_NUMBER
         self.dice = [{"value": num, "locked": False, "counted": True} \
@@ -66,8 +69,6 @@ class DiceGame:
             "player_name": "",
         }
 
-        self.winner = None
-
     def get_current_turn_name(self):
         return self.players[self.current_turn]["name"]
 
@@ -75,6 +76,8 @@ class DiceGame:
         current_turn_name = self.get_current_turn_name()
         return {
             "game_over": self.game_over,
+            "ended": self.ended,
+            "ended_by": self.ended_by,
             "players": self.players,
             "current_turn": self.current_turn,
             "current_turn_name": current_turn_name,
@@ -142,6 +145,20 @@ class DiceGame:
         self.game_over = True
         self.can_stop = False
         logging.debug("winner: {}".format(self.winner))
+
+    def end_game(self):
+        if self.game_over:
+            raise GameOverError
+
+        self.last_action["type"] = "end"
+        self.last_action["player_name"] = self.get_current_turn_name()
+
+        self.ended_by = self.get_current_turn_name()
+        self.last_action["result"] = "game_over"
+        self.game_over = True
+        self.ended = True
+        self.can_stop = False
+        logging.debug("ended: {}".format(self.ended_by))
 
     def roll(self):
         if self.game_over:

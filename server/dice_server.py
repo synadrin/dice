@@ -96,6 +96,14 @@ class DiceServer:
         self.rooms[room_code].stop_roll(name)
         await self.notify_room(room_code)
 
+    async def end_current_game(self, room_code, name):
+        if not room_code in self.rooms:
+            raise NoSuchRoomError(room_code)
+
+        # Raises dice_game.NoGameRunningError and dice_game.WrongPlayerError
+        self.rooms[room_code].end_current_game(name)
+        await self.notify_room(room_code)
+
     async def consumer_handler(self, websocket, path):
         room_code = ""
         name = ""
@@ -114,6 +122,8 @@ class DiceServer:
                         await self.roll(room_code, name)
                     elif data["action"] == "stop_roll":
                         await self.stop_roll(room_code, name)
+                    elif data["action"] == "end_game":
+                        await self.end_current_game(room_code, name)
                     else:
                         logging.error("Unsupported event: {}".format(data))
                 except json.JSONDecodeError:

@@ -106,8 +106,16 @@ class Room:
         self.current_game = dice_game.DiceGame(list(self.members))
         self.is_game_active = True
 
-    def end_current_game(self):
-        pass
+    def end_current_game(self, name):
+        if not self.is_game_active:
+            raise NoGameRunningError
+
+        if name != self.current_game.get_current_turn_name():
+            raise WrongPlayerError
+
+        # End the game
+        self.current_game.end_game()
+        self.is_game_active = not self.current_game.game_over
 
     def roll(self, name):
         if not self.is_game_active:
