@@ -11,9 +11,7 @@ help:
 	@echo 'Makefile for Dice server                                                  '
 	@echo '                                                                          '
 	@echo 'Usage:                                                                    '
-	@echo '   make html                           (re)generate the web site          '
 	@echo '   make clean                          remove the generated files         '
-	@echo '   make publish                        generate using production settings '
 	@echo '   make serve                          start websockets server            '
 	@echo '   make test                           generate and serve the website     '
 	@echo '   make deb                            create debian package              '
@@ -28,11 +26,8 @@ serve:
 
 test: clean serve
 
-publish:
-	$(SERVE_SCRIPT) -c $(PUBLISHCONF)
-
 # Requires build-essential
 deb:
 	$(BUILD_SCRIPT) -c $(PUBLISHCONF) -o $(OUTPUTDIR)
 
-.PHONY: html help clean serve publish deb
+.PHONY: help clean serve publish deb
