@@ -182,6 +182,7 @@ input#more_options_toggle + label {
 	display: block;
 	cursor: pointer;
 	text-align: center;
+	font-weight: bold;
 }
 input#more_options_toggle + label::before {
 	display: inline-block;
@@ -213,6 +214,10 @@ input#more_options_toggle:checked ~ #more_options_content {
 	margin: 1em auto;
 	padding: 0.2em;
 	text-align: right;
+}
+
+#dice_set_choice {
+	font-size: 1.0em;
 }
 
 #end_btn {
