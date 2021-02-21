@@ -74,13 +74,13 @@ button {
 	border-radius: 15px;
 	text-align: center;
 }
-#game_over_overlay .win {
+#game_over_overlay.win {
 	background: #2d9;
 }
-#game_over_overlay .ended {
+#game_over_overlay.ended {
 	background: #ccc;
 }
-.game_over_text {
+#game_over_text {
 	font-size: 150%;
 }
 #game_over_name {
@@ -220,7 +220,7 @@ input#more_options_toggle:checked ~ #more_options_content {
 	font-size: 1.0em;
 }
 
-#end_btn {
+#end_game_btn {
 	display: block;
 	margin: auto;
 }
