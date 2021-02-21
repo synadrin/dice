@@ -55,10 +55,12 @@ function DiceGame()
 		roll_btn: document.getElementById("roll_btn"),
 		stop_roll_btn: document.getElementById("stop_roll_btn"),
 		dice_set_choice: document.getElementById("dice_set_choice"),
+		end_game_btn: document.getElementById("end_game_btn"),
 	};
 	this.controls.start_btn.disabled = true;
 	this.controls.roll_btn.disabled = true;
 	this.controls.stop_roll_btn.disabled = true;
+	this.controls.end_game_btn.disabled = true;
 
 	this.last_error_no = 0;
 	this.game_over_notice_dismissed = false;
@@ -263,6 +265,7 @@ function DiceGame()
 			that.controls.start_btn.disabled = !that.can_start;
 			that.controls.roll_btn.disabled = !that.can_roll;
 			that.controls.stop_roll_btn.disabled = !that.can_stop;
+			that.controls.end_game_btn.disabled = !that.can_roll;
 
 			if (that.game_exists)
 			{
@@ -580,6 +583,14 @@ function DiceGame()
 		that.send(command);
 	}
 
+	this.end_game = function()
+	{
+		var command = {
+			action: "end_game"
+		}
+		that.send(command);
+	}
+
 	this.dice_set_selected = function(evt)
 	{
 		that.dice_set = evt.target.value;
@@ -591,6 +602,7 @@ function DiceGame()
 	this.controls.start_btn.onclick = this.start_game;
 	this.controls.roll_btn.onclick = this.roll_click;
 	this.controls.stop_roll_btn.onclick = this.stop_roll;
+	this.controls.end_game_btn.onclick = this.end_game;
 
 	// Bind selection
 	this.controls.dice_set_choice.onchange = this.dice_set_selected;
