@@ -101,6 +101,7 @@ function DiceGame()
 	this.tile_width = 64;
 	this.tile_height = 64;
 	this.tile_padding = 8;
+	this.tile_locked_offset = 16;
 
 	this.currentTime = Date.now();
 	this.roll_animation = {
@@ -178,6 +179,10 @@ function DiceGame()
 			dst_x = (position + 1) * that.tile_padding
 				+ (position * that.tile_width);
 			dst_y = that.tile_padding;
+			if (locked)
+			{
+				dst_y += that.tile_locked_offset;
+			}
 			that.offscreen_ctx.drawImage(that.tilesheet_img,
 				src_x, src_y, that.tile_width, that.tile_height,
 				dst_x, dst_y, that.tile_width, that.tile_height);
