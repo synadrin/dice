@@ -59,12 +59,21 @@ a.close_btn {
 
 button {
 	display: inline-block;
+	background: lightgreen;
+	transition: all 0.8s;
 	width: 30%;
 	padding: 0.25em;
 	font-size: 1.25em;
 	border-radius: 15px;
 	min-height: 3em;
 	vertical-align: top;
+}
+button:disabled,
+button[disabled],
+#end_game_btn:disabled,
+#end_game_btn[disable] {
+	background: #ddd;
+	cursor: not-allowed;
 }
 
 #game_over_overlay {
@@ -223,6 +232,7 @@ input#more_options_toggle:checked ~ #more_options_content {
 #end_game_btn {
 	display: block;
 	margin: auto;
+	background: orangered;
 }
 
 footer {
