@@ -238,5 +238,5 @@ input#more_options_toggle:checked ~ #more_options_content {
 footer {
 	margin: auto;
 	text-align: center;
-	font-size: 90%;
+	font-size: 85%;
 }

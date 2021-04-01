@@ -38,5 +38,6 @@ indexContent=${indexContent//"{DEBUG}"/"${DEBUG}"}
 indexContent=${indexContent//"{SITENAME}"/"${SITENAME}"}
 indexContent=${indexContent//"{SITEURL}"/"${SITEURL}"}
 indexContent=${indexContent//"{COPYRIGHT}"/"${COPYRIGHT}"}
+indexContent=${indexContent//"{VERSION}"/"${VERSION}"}
 indexContent=${indexContent//"{WEBSOCKET_URL}"/"${WEBSOCKET_URL}"}
 echo "${indexContent}" > "${OUTPUT_DIR}/index.html"
