@@ -11,6 +11,11 @@ h1 {
 	margin: auto;
 	text-align: center;
 }
+h3 {
+	margin: auto 2em;
+	text-align: center;
+	border-bottom: thin solid #000;
+}
 
 #error_msgs .error_msg {
 	box-sizing: border-box;
@@ -179,41 +184,48 @@ canvas {
 	background: #ccc;
 }
 
-#more_options {
+#more_options,
+#how_to_play {
 	margin-top: 1em;
 	padding: 0.4em;
 	background: #ddd;
 }
-input#more_options_toggle {
+input#more_options_toggle,
+input#how_to_play_toggle {
 	display: none;
 }
-input#more_options_toggle + label {
+input#more_options_toggle + label,
+input#how_to_play_toggle + label {
 	display: block;
 	cursor: pointer;
 	text-align: center;
 	font-weight: bold;
 }
-input#more_options_toggle + label::before {
+input#more_options_toggle + label::before,
+input#how_to_play_toggle + label::before {
 	display: inline-block;
 	margin-right: 0.2em;
 	border: solid;
 	border-width: 0 0.2em 0.2em 0;
 	padding: 0.2em;
-	transition: all .5s ease;
+	transition: all 0.8s ease;
 	content: "";
 	transform: rotate(-45deg);
 }
-input#more_options_toggle:checked + label::before {
+input#more_options_toggle:checked + label::before,
+input#how_to_play_toggle:checked + label::before {
 	transform: rotate(45deg);
 }
-#more_options_content {
-	transition: max-height 1.0s ease-out;
+#more_options_content,
+#how_to_play_content {
+	transition: max-height 0.8s ease-out;
 	max-height: 0;
 	overflow: hidden;
 }
-input#more_options_toggle:checked ~ #more_options_content {
-	transition: max-height 1.0s ease-in;
-	max-height: 500px;
+input#more_options_toggle:checked ~ #more_options_content,
+input#how_to_play_toggle:checked ~ #how_to_play_content {
+	transition: max-height 0.8s ease-in;
+	max-height: 1000px;
 }
 
 #more_options_content label {
@@ -233,6 +245,21 @@ input#more_options_toggle:checked ~ #more_options_content {
 	display: block;
 	margin: auto;
 	background: orangered;
+}
+
+#how_to_play_content {
+}
+#scoring .scoring_dice {
+	width: 30%;
+	max-width: 10em;
+	text-align: right;
+}
+#scoring .scoring_points {
+	text-align: left;
+	vertical-align: top;
+}
+#scoring th.scoring_points {
+	padding-left: 1.5em;
 }
 
 footer {

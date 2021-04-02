@@ -98,6 +98,65 @@
 	</div>
 </div>
 
+<div id="how_to_play">
+	<input type="checkbox" id="how_to_play_toggle">
+	<label for="how_to_play_toggle">How To Play</label>
+	<div id="how_to_play_content">
+		<h3>Turns</h3>
+		<ul>
+			<li>Each player takes a turn to roll dice.</li>
+			<li>Dice need to be scored to continue (see below), otherwise
+				the player "busts" and gets no points this turn.</li>
+			<li>Dice which score are put aside, and the rest are available
+				to be rolled.</li>
+			<li>If all dice are scored, then they all become available to
+				be rolled again. This is called "control".</li>
+			<li>The player must score a minimum of <strong>650</strong>
+				points in a turn to get on the scoreboard.</li>
+			<li>Once on the scoreboard, a player can choose to stop rolling
+				and take their points. That player is now free to stop
+				rolling at any time on future turns to take their points.</li>
+			<li>If a player takes more than <strong>1,000</strong> points
+				on their turn, whatever dice remain when they are finished
+				are then handed to the next player. That next player starts
+				their turn with the same score the previous player took.</li>
+			<li>The first player to reach exactly <strong>10,000</strong>
+				points (without going over) wins.</li>
+		</ul>
+		<h3>Scoring</h3>
+		<table id="scoring">
+			<thead>
+				<tr>
+					<th class="scoring_dice">Dice rolled</th>
+					<th class="scoring_points">Score</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="scoring_dice">1</td>
+					<td class="scoring_points">= 100 points</td>
+				</tr>
+				<tr>
+					<td class="scoring_dice">5</td>
+					<td class="scoring_points">= 50 points</td>
+				</tr>
+				<tr>
+					<td class="scoring_dice">5, 5</td>
+					<td class="scoring_points">= 100 points (and only one die is locked)</td>
+				</tr>
+				<tr>
+					<td class="scoring_dice">1, 1, 1</td>
+					<td class="scoring_points">= 1,000 points</td>
+				</tr>
+				<tr>
+					<td class="scoring_dice">#, #, #</td>
+					<td class="scoring_points">= # * 100 points</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
 <pre id="debug_console"></pre>
 
 <footer>
