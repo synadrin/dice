@@ -31,7 +31,7 @@ TOP_DIR=$(dirname $(realpath "${0}"))
 TEMPLATES_DIR="${TOP_DIR}/templates"
 
 mkdir -p "${OUTPUT_DIR}"
-cp -v "${TEMPLATES_DIR}"/*.{css,js,png} "${OUTPUT_DIR}/"
+cp -v "${TEMPLATES_DIR}"/*.{css,ico,js,png} "${OUTPUT_DIR}/"
 
 echo "${VERSION}" > "${OUTPUT_DIR}/version.txt"
 
