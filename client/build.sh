@@ -33,6 +33,8 @@ TEMPLATES_DIR="${TOP_DIR}/templates"
 mkdir -p "${OUTPUT_DIR}"
 cp -v "${TEMPLATES_DIR}"/*.{css,js,png} "${OUTPUT_DIR}/"
 
+echo "${VERSION}" > "${OUTPUT_DIR}/version.txt"
+
 indexContent=$(cat "${TEMPLATES_DIR}/index.html")
 indexContent=${indexContent//"{DEBUG}"/"${DEBUG}"}
 indexContent=${indexContent//"{SITENAME}"/"${SITENAME}"}
