@@ -100,7 +100,7 @@ function DiceGame()
 	this.tilesheet_img.src = TOP_URL + "/dice-tilesheet.png";
 	this.tile_width = 64;
 	this.tile_height = 64;
-	this.tile_padding = 8;
+	this.tile_padding = 6;
 	this.tile_locked_offset = 16;
 
 	this.currentTime = Date.now();
