@@ -1,3 +1,4 @@
+import copy
 from itertools import repeat
 import logging
 from operator import itemgetter
@@ -58,7 +59,7 @@ class DiceGame:
             for num in range(1, DICE_NUMBER + 1)]
         self.current_score = 0
         self.available_dice = DICE_NUMBER
-        self.rolls = []
+        self.game_log = []
         self.total_roll_count = 0
         self.last_roll_score = -1
         self.can_stop = False
@@ -66,7 +67,9 @@ class DiceGame:
         self.last_action = {
             "type": "",
             "result": "",
+            "dice": [],
             "player_name": "",
+            "score": 0,
         }
 
     def get_current_turn_name(self):
@@ -92,6 +95,7 @@ class DiceGame:
             "available_dice": self.available_dice,
             "last_roll_score": self.last_roll_score,
             "last_action": self.last_action,
+            "game_log": self.game_log,
             "can_stop": self.can_stop,
             "dice": self.dice,
             "current_score": self.current_score,
@@ -135,6 +139,7 @@ class DiceGame:
         logging.debug("bust")
         self.last_action["result"] = "bust"
         self.previous_turn_result = "busted"
+        self.game_log.append(copy.deepcopy(self.last_action))
         self.new_turn()
 
     def win(self):
@@ -144,6 +149,7 @@ class DiceGame:
         self.last_action["result"] = "win"
         self.game_over = True
         self.can_stop = False
+        self.game_log.append(copy.deepcopy(self.last_action))
         logging.debug("winner: {}".format(self.winner))
 
     def end_game(self):
@@ -151,13 +157,15 @@ class DiceGame:
             raise GameOverError
 
         self.last_action["type"] = "end"
+        self.last_action["result"] = "game_over"
         self.last_action["player_name"] = self.get_current_turn_name()
+        self.last_action["score"] = 0
 
         self.ended_by = self.get_current_turn_name()
-        self.last_action["result"] = "game_over"
         self.game_over = True
         self.ended = True
         self.can_stop = False
+        self.game_log.append(copy.deepcopy(self.last_action))
         logging.debug("ended: {}".format(self.ended_by))
 
     def roll(self):
@@ -166,11 +174,13 @@ class DiceGame:
 
         self.last_action["type"] = "roll"
         self.last_action["player_name"] = self.get_current_turn_name()
+        self.last_action["dice"] = []
 
         # Roll available dice
         for die in self.dice:
             if not die["locked"]:
                 die["value"] = random.randint(DICE_MIN_VALUE, DICE_MAX_VALUE)
+                self.last_action["dice"].append(die["value"])
             die["counted"] = False
         self.total_roll_count += 1
 
@@ -218,6 +228,7 @@ class DiceGame:
 
         #logging.debug("roll: {} / score: {}".format(self.dice, self.last_roll_score))
         self.current_score += self.last_roll_score
+        self.last_action["score"] = self.last_roll_score
         player_new_score = self.players[self.current_turn]["score"] \
             + self.current_score
         if self.last_roll_score == 0:
@@ -241,6 +252,8 @@ class DiceGame:
                 # Player can only stop rolling if they hit a minimum overall score
                 self.can_stop = True
 
+            self.game_log.append(copy.deepcopy(self.last_action))
+
     def stop_roll(self):
         if not self.can_stop:
             raise CantStopError
@@ -248,9 +261,11 @@ class DiceGame:
         logging.debug("stop_roll")
 
         self.last_action["type"] = "stop_roll"
-        self.last_action["result"] = ""
+        self.last_action["result"] = "+{}".format(self.current_score)
         self.last_action["player_name"] = self.get_current_turn_name()
         self.previous_turn_result = "+{}".format(self.current_score)
+
+        self.game_log.append(copy.deepcopy(self.last_action))
 
         self.players[self.current_turn]["score"] += self.current_score
         self.update_players_places()
