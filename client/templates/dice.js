@@ -83,6 +83,7 @@ function DiceGame()
 		game_over_close_btn: document.getElementById("game_over_close_btn"),
 		game_over_text: document.getElementById("game_over_text"),
 		game_over_name: document.getElementById("game_over_name"),
+		game_log: document.getElementById("game_log_content"),
 		debug_console: document.getElementById("debug_console"),
 	};
 
@@ -254,6 +255,45 @@ function DiceGame()
 		that.game_state = new_state;
 	}
 
+	this.display_game_log = function()
+	{
+		that.display.game_log.innerHTML = "";
+		for (var i = 0; i < that.game_state.game_log.length; i++)
+		{
+			var p = document.createElement("p");
+			var name_span = document.createElement("span");
+			name_span.className = "name";
+			name_span.appendChild(document.createTextNode(
+				that.game_state.game_log[i].player_name
+			));
+			p.appendChild(name_span);
+
+			var text = "";
+			switch (that.game_state.game_log[i].type)
+			{
+				case "roll":
+					text = " rolled: "
+						+ that.game_state.game_log[i].dice.join(", ")
+						+ " (" + that.game_state.game_log[i].score
+						+ ", " + that.game_state.game_log[i].result
+						+ ")";
+					break;
+				case "stop_roll":
+					text = " stopped: " + that.game_state.game_log[i].result;
+					break;
+				case "end":
+					text = " ended the game.";
+					break;
+				default:
+					text = " did something unexpected.";
+					break;
+			}
+			p.appendChild(document.createTextNode(text));
+
+			that.display.game_log.appendChild(p);
+		}
+	}
+
 	this.update_display = function()
 	{
 		if (that.in_room)
@@ -336,6 +376,9 @@ function DiceGame()
 				{
 					that.notify_player();
 				}
+
+				// Update the game log
+				that.display_game_log();
 
 				// Game Over display
 				if ("game_over" in that.game_state && that.game_state.game_over

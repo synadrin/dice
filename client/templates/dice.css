@@ -185,16 +185,19 @@ canvas {
 }
 
 #more_options,
+#game_log,
 #how_to_play {
 	margin-top: 1em;
 	padding: 0.4em;
 	background: #ddd;
 }
 input#more_options_toggle,
+input#game_log_toggle,
 input#how_to_play_toggle {
 	display: none;
 }
 input#more_options_toggle + label,
+input#game_log_toggle + label,
 input#how_to_play_toggle + label {
 	display: block;
 	cursor: pointer;
@@ -202,6 +205,7 @@ input#how_to_play_toggle + label {
 	font-weight: bold;
 }
 input#more_options_toggle + label::before,
+input#game_log_toggle + label::before,
 input#how_to_play_toggle + label::before {
 	display: inline-block;
 	margin-right: 0.2em;
@@ -213,10 +217,12 @@ input#how_to_play_toggle + label::before {
 	transform: rotate(-45deg);
 }
 input#more_options_toggle:checked + label::before,
+input#game_log_toggle:checked + label::before,
 input#how_to_play_toggle:checked + label::before {
 	transform: rotate(45deg);
 }
 #more_options_content,
+#game_log_content,
 #how_to_play_content {
 	transition: max-height 0.8s ease-out;
 	max-height: 0;
@@ -226,6 +232,9 @@ input#more_options_toggle:checked ~ #more_options_content,
 input#how_to_play_toggle:checked ~ #how_to_play_content {
 	transition: max-height 0.8s ease-in;
 	max-height: 1000px;
+}
+input#game_log_toggle:checked ~ #game_log_content {
+	max-height: 100%;
 }
 
 #more_options_content label {
@@ -245,6 +254,14 @@ input#how_to_play_toggle:checked ~ #how_to_play_content {
 	display: block;
 	margin: auto;
 	background: orangered;
+}
+
+#game_log_content p {
+	font-size: 90%;
+}
+#game_log_content .name,
+#game_log_content .result {
+	font-weight: bold;
 }
 
 #how_to_play_content {
