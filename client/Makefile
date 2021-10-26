@@ -6,10 +6,10 @@ OUTPUTDIR=$(BASEDIR)/html
 CONFFILE=$(BASEDIR)/dev.conf
 PUBLISHCONF=$(BASEDIR)/pub.conf
 
-SSH_HOST=vps01.macneils.ca
-SSH_PORT=22
-SSH_USER=tmacneil
-SSH_TARGET_DIR=/srv/www/dice.pixelcards.ca
+SSH_HOST=
+SSH_PORT=
+SSH_USER=
+SSH_TARGET_DIR=
 
 help:
 	@echo 'Makefile for Dice website                                                 '
